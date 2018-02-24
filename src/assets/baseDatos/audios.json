@@ -1,0 +1,30 @@
+[
+  {
+    "usuario": {
+      "firstName": "pedro",
+      "secondName": "lucas",
+      "firstLastName": "rivera",
+      "secondLastName": "martinez",
+      "email": "jose"
+    },
+    "fechaSubida": "2012-12-04",
+    "estadoVoz": "En proceso",
+    "archivoOriginal": "path",
+    "archivoConvertida": "path",
+    "idVoz": "1"
+  },
+  {
+    "usuario": {
+      "firstName": "pedro",
+      "secondName": "lucas",
+      "firstLastName": "rivera",
+      "secondLastName": "martinez",
+      "email": "jose"
+    },
+    "fechaSubida": "2012-15-04",
+    "estadoVoz": "Convertida",
+    "archivoOriginal": "path",
+    "archivoConvertida": "path",
+    "idVoz": "1"
+  }
+]

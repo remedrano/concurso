@@ -1,0 +1,40 @@
+<div class="container">
+
+  <div class="divider divider"></div>
+  <h5 class="center">Listado de audios</h5>
+
+  <table id="tabla-catalogo" *ngIf="voces" datatable="ng" class="table row-border hover center-align center" >
+    <thead>
+    <tr>
+      <th>Email</th>
+      <th>Nombres</th>
+      <th>Apellidos</th>
+      <th>Fecha registro</th>
+      <th>Estado</th>
+      <th>Archivo original</th>
+      <th>Archivo convertido</th>
+      <th>Reproducir</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let voz of voces">
+      <td>{{voz.usuario.email}}</td>
+      <td>{{voz.usuario.firstName + " " + voz.usuario.secondName}}</td>
+      <td>{{voz.usuario.firstLastName + " " + voz.usuario.secondLastName }}</td>
+      <td>{{voz.usuario.firstLastName}}</td>
+      <td>{{voz.fechaSubida}}</td>
+      <td>{{voz.archivoOriginal}}</td>
+      <td>{{voz.archivoConvertida}}</td>
+      <td class="center-align">
+        <mat-icon *ngIf="voz.estadoVoz=='Convertida'" style="cursor: pointer" (click)="reproducirAudio(voz.archivoConvertida)" >play_circle_filled</mat-icon>
+      </td>
+
+
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="landing-page" >
+   <button id="jwplayer">BOton ejemplo</button>
+  </div>
+</div>

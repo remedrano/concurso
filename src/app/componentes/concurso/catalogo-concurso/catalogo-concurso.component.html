@@ -1,0 +1,38 @@
+<div class="container">
+
+  <div class="divider divider"></div>
+  <h5 class="center">Listado de concursos</h5>
+
+  <table id="tabla-catalogo" *ngIf="concursos" datatable="ng" class="table row-border hover" >
+    <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Url</th>
+      <th>Inicio</th>
+      <th>Finalización</th>
+      <th>Premio</th>
+      <th>Detalles</th>
+      <th>Editar</th>
+      <th>Eliminar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let concurso of concursos">
+      <td>{{concurso.nombreConcurso}}</td>
+      <td>{{concurso.urlConcurso}}</td>
+      <td>{{concurso.fechaInicioConcurso}}</td>
+      <td>{{concurso.fechaFinConcurso}}</td>
+      <td>{{concurso.valorPagar}}</td>
+      <td class="center-align">
+        <mat-icon style="cursor: pointer" routerLink="detalleConcurso/{{concurso.urlConcurso}}" > search</mat-icon>
+      </td>
+      <td class="center-align">
+        <mat-icon style="cursor: pointer" routerLink="editarConcurso/{{concurso.id}}" >edit</mat-icon>
+      </td>
+      <td class="center-align">
+        <mat-icon style="cursor: pointer" (click)="eliminar(concurso)">delete</mat-icon>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

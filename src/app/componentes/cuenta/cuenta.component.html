@@ -1,0 +1,64 @@
+<div class="signin-content">
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="enviarFormulario()">
+        <mat-grid-list cols="2" rowHeight="60px">
+          <mat-grid-tile>
+            <mat-input-container class="full-width-input">
+              <input matInput placeholder="Primer nombre" formControlName="firstName" required>
+              <mat-error *ngIf="validarCampos('email')"> Primer nombre obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-input-container class="full-width-input">
+              <input matInput placeholder="Segundo nombre" formControlName="secondName" required>
+              <mat-error *ngIf="validarCampos('secondName')"> Segundo nombre obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-input-container class="full-width-input">
+              <input matInput placeholder="Primer apellido" formControlName="firstLastName" required>
+              <mat-error *ngIf="validarCampos('firstLastName')"> Primer apellido obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-input-container class="full-width-input">
+              <input matInput placeholder="Segundo apellido" formControlName="secondLastName" required>
+              <mat-error *ngIf="validarCampos('secondLastName')"> Segundo apellido obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-input-container class="full-width-input">
+              <input matInput type="email" placeholder="Email" formControlName="email" required>
+              <mat-error *ngIf="validarCampos('email')"> Email con formato (nombre@dominio.com) </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-selection-list class="full-width-input">
+              <mat-select placeholder="Rol"  formControlName="rolSelect" required>
+                <mat-option *ngFor="let rol of roles" [value]="rol.value" >
+                  {{rol.nombre}}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="validarCampos('rolSelect')">Seleccione un rol</mat-error>
+            </mat-selection-list>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-input-container class="full-width-input">
+              <input matInput type="password" placeholder="Clave" formControlName="password" required>
+              <mat-error *ngIf="validarCampos('password')"> La clave es obligatoria</mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-input-container class="full-width-input">
+              <input matInput type="password" placeholder="Confirmar clave" formControlName="confirmpass" required>
+              <mat-error *ngIf="validarCampos('confirmpass')">Debe ser igual a la clave</mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <button mat-raised-button color="primary" type="button" routerLink="login" >Atás</button>
+        <button mat-raised-button color="warn" type="submit" >Registrarse</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
