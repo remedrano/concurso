@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators,AbstractControl } from '@angular/for
 import { LoginService  } from '../../servicios/login.service';
 import { Router} from '@angular/router';
 import { SesionService } from "../../servicios/sesion.service";
+import {Usuario} from '../../modelos/usuario';
 
 function passwordConfirming(c: AbstractControl): any {
   if(!c.parent || !c) return;
