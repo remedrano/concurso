@@ -1,9 +1,51 @@
 <div class="container">
 
   <div class="divider divider"></div>
+  <h5 class="center">Información del concurso</h5>
+
+  <mat-card>
+    <mat-card-content>
+      <table >
+        <tbody>
+        <tr class="mat-row">
+          <td class="right-align mat-calendar-body-label text-darken-1 "><mat-label><b>Nombre :</b></mat-label></td>
+          <td colspan="3" class="left-align mat-calendar-body-label">Ejemplo</td>
+          <td class="right-align mat-calendar-body-label"><mat-label><b>Valor a pagar :</b></mat-label></td>
+          <td class="left-align mat-calendar-body-label"><mat-label>Este</mat-label></td>
+        </tr>
+        <tr>
+          <td class="right-align mat-calendar-body-label"><mat-label><b>Fecha inicio :</b></mat-label></td>
+          <td class="left-align mat-calendar-body-label"><mat-label>Este</mat-label></td>
+          <td class="right-align mat-calendar-body-label"><mat-label ><b>Fecha Fin :</b></mat-label></td>
+          <td class="left-align mat-calendar-body-label"><mat-label>Ejemplo</mat-label></td>
+          <td class="right-align mat-calendar-body-label"><mat-label><b>Url : </b></mat-label></td>
+          <td class="left-align mat-calendar-body-label"><mat-label>Este</mat-label></td>
+        </tr>
+        <tr>
+          <td class="right-align mat-calendar-body-label"><mat-label ><b>Guión :</b></mat-label></td>
+          <td class="left-align mat-calendar-body-label" colspan="3"><mat-label>Ejemplo</mat-label></td>
+        </tr>
+        <tr>
+          <td class="right-align mat-calendar-body-label"><mat-label><b>Recomendación : </b></mat-label></td>
+          <td class="left-align mat-calendar-body-label" colspan="3"><mat-label>Este</mat-label></td>
+        </tr>
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="landing-page">
+    <!--<jw-player [file]="'assets/audio/'"
+               [height]="'420px'"
+               [width]="'680px'"
+               [seek]="seek"
+               (onTime)="onTime($event)">
+    </jw-player>-->
+  </div>
+
   <h5 class="center">Listado de audios</h5>
 
-  <table id="tabla-catalogo" *ngIf="voces" datatable="ng" class="table row-border hover center-align center" >
+  <table datatable="ng" class="table row-border hover" >
     <thead>
     <tr>
       <th>Email</th>
@@ -28,13 +70,75 @@
       <td class="center-align">
         <mat-icon *ngIf="voz.estadoVoz=='Convertida'" style="cursor: pointer" (click)="reproducirAudio(voz.archivoConvertida)" >play_circle_filled</mat-icon>
       </td>
-
-
     </tr>
     </tbody>
   </table>
 
-  <div class="landing-page" >
-   <button id="jwplayer">BOton ejemplo</button>
+  <div class="divider"></div>
+  <h5 class="center">Agregar audio</h5>
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="enviarFormulario()">
+        <mat-grid-list cols="2" rowHeight="70px">
+
+          <mat-grid-tile >
+            <mat-input-container class="full-width-input">
+              <input matInput placeholder="Primer nombre" formControlName="firstName" required>
+              <mat-error *ngIf="validarCampos('firstName')"> Primer nombre obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+
+          <mat-grid-tile >
+            <mat-input-container class="full-width-input">
+              <input matInput placeholder="Segundo nombre" formControlName="secondName" required>
+              <mat-error *ngIf="validarCampos('secondName')"> Segundo nombre obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+
+          <mat-grid-tile >
+            <mat-input-container class="full-width-input">
+              <input matInput placeholder="Primero Apellido" formControlName="firstLastName" required>
+              <mat-error *ngIf="validarCampos('firstLastName')"> Primer apellido obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+
+          <mat-grid-tile >
+            <mat-input-container class="full-width-input">
+              <input matInput placeholder="Segundo apellido" formControlName="secondLastName" required>
+              <mat-error *ngIf="validarCampos('secondLastName')"> Segundo apellido obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+
+          <mat-grid-tile >
+            <mat-input-container class="full-width-input">
+              <input matInput type="email" placeholder="Email" formControlName="email" required>
+              <mat-error *ngIf="validarCampos('email')"> Email obligatorio </mat-error>
+            </mat-input-container>
+          </mat-grid-tile>
+
+          <mat-grid-tile >
+            <div ng2FileDrop  [uploader]="uploader">
+              <input type="file" ng2FileSelect [uploader]="uploader" multiple />
+            </div>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="2">
+            <mat-form-field class="full-width-input">
+              <textarea matInput placeholder="Observaciones" formControlName="observacion" required> </textarea>
+              <mat-error *ngIf="validarCampos('observacion')"> Observaciones obligatorio</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <mat-divider></mat-divider>
+        <br>
+        <button mat-raised-button color="primary" type="submit" >Guardar</button>
+        <button mat-raised-button color="warn" type="button" ng-click="history.back()" >Cancelar</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
   </div>
-</div>
+
+
+

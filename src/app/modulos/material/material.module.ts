@@ -13,7 +13,10 @@ import {
   MatGridListModule,
   MatSelectModule,
   MatIconModule,
-  MatDatepickerModule, MatNativeDateModule
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatTableModule,
+  MatExpansionModule
 } from '@angular/material';
 
 @NgModule({
@@ -34,7 +37,9 @@ import {
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatExpansionModule
   ],
   declarations: []
 })

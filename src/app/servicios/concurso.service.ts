@@ -4,7 +4,6 @@ import { Voz } from "../modelos/voz";
 import { HttpClient, HttpParams,HttpHeaders} from "@angular/common/http";
 import { Observable} from "rxjs/Observable";
 
-
 @Injectable()
 export class ConcursoService {
 
@@ -30,4 +29,15 @@ export class ConcursoService {
     return this.http.get<Voz[]>('assets/baseDatos/audios.json');
   }
 
+  subirVoz( voz : Voz) : Observable<Voz>{
+    return this.http.post<Voz>('assets/baseDatos/usuarios.json', {
+      params: voz
+    });
+  }
+
+  cargarArchivoVoz( archivo : any) : Observable<Voz>{
+    return this.http.post<Voz>('assets/baseDatos/usuarios.json', {
+      params: archivo
+    });
+  }
 }
