@@ -165,7 +165,7 @@ export class DialogClass implements OnInit,AfterViewInit {
 
   ngAfterViewInit(){
    jwplayer("mediaplayer").setup({
-      file: "/assets/audio/voz.mp3",
+      file: "http://172.12.25.25:9000/assets/audio/voz.mp3",
       height: 180,
       width: 350,
       autostart: true,
