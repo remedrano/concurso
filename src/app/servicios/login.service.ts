@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {HttpClient, HttpParams, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpParams, HttpHeaders , HttpHeaderResponse} from '@angular/common/http';
 import {Observable} from "rxjs/Observable";
 import { Usuario } from '../modelos/usuario';
 import {SesionService} from "../servicios/sesion.service";
 
 @Injectable()
 export class LoginService {
+
+  private urlServer : string = 'http://172.24.101.80:9000';
 
   constructor( private router: Router, private http: HttpClient, private sesion : SesionService ) {
   }
@@ -24,19 +26,8 @@ export class LoginService {
   }
 
   crearCuenta( usuario : Usuario ) : Observable<any>{
-
-    let params =  new HttpParams( );
-    Object.keys(usuario).forEach(function (item) {
-      params = params.set(item, usuario[item]);
-    });
-
-    let headers = new HttpHeaders();
-    headers.append( 'Access-Control-Allow-Origin','*' );
-
-    return this.http.post<any>('http://172.24.101.80:9000/api/user', {
-      params: params
-    },{ headers: headers } );
-
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
+    return this.http.post<any>(this.urlServer+'/api/user', JSON.stringify(usuario),{ headers:headers } );
   }
 
 

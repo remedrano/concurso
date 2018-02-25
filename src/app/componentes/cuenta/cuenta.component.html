@@ -6,7 +6,7 @@
           <mat-grid-tile>
             <mat-input-container class="full-width-input">
               <input matInput placeholder="Primer nombre" formControlName="firstName" required>
-              <mat-error *ngIf="validarCampos('firstName')"> Primer nombre obligatorio </mat-error>
+              <mat-error *ngIf="validarCampos('email')"> Primer nombre obligatorio </mat-error>
             </mat-input-container>
           </mat-grid-tile>
           <mat-grid-tile>
@@ -56,8 +56,8 @@
             </mat-input-container>
           </mat-grid-tile>
         </mat-grid-list>
-        <button mat-raised-button color="primary" type="button" routerLink="login" >Atás</button>
-        <button mat-raised-button color="warn" type="submit" >Registrarse</button>
+        <button mat-raised-button color="primary" type="submit" >Guardar</button>
+        <button mat-raised-button color="warn" type="button"  ng-click="history.back()" >Cancelar</button>
       </form>
     </mat-card-content>
   </mat-card>

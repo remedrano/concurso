@@ -1,10 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef,ChangeDetectionStrategy  } from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, AfterViewInit} from '@angular/core';
 import { ConcursoService } from "../../servicios/concurso.service";
 import {Router,ActivatedRoute} from "@angular/router";
 import { Voz } from "../../modelos/voz";
 import { Usuario } from "../../modelos/usuario";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FileUploader , FileLikeObject} from 'ng2-file-upload';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+
 
 @Component({
   selector: 'app-home-concurso',
@@ -14,6 +16,7 @@ import { FileUploader , FileLikeObject} from 'ng2-file-upload';
     ConcursoService
   ]
 })
+
 export class HomeConcursoComponent implements OnInit {
 
   public uploader:FileUploader
@@ -34,7 +37,8 @@ export class HomeConcursoComponent implements OnInit {
      private concursoService : ConcursoService,
      private router : Router,
      private route: ActivatedRoute,
-     private cd: ChangeDetectorRef ) { }
+     private cd: ChangeDetectorRef ,
+     public dialog: MatDialog) { }
 
   ngOnInit( ) {
 
@@ -66,10 +70,17 @@ export class HomeConcursoComponent implements OnInit {
 
   }
 
-  public seek: number = 0;
 
-  public onTime($event: any) {
+  reproducirAudio( urlArchivo ): void {
 
+    let dialogRef = this.dialog.open(DialogClass, {
+      width: '400px',
+      data: { urlArchivo: urlArchivo }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   cargarArchivo( archivo : any ){
@@ -81,7 +92,6 @@ export class HomeConcursoComponent implements OnInit {
       reader.readAsDataURL(archivo.files[0]);
     }
   }
-
   validarCampos(campo: string) {
     return (
       (!this.form.get(campo).valid && this.form.get(campo).touched) ||
@@ -136,7 +146,31 @@ export class HomeConcursoComponent implements OnInit {
         console.log( this.errorMessageFile );
     }
   }
+}
+declare var jwplayer : any;
 
+@Component({
+  selector: 'app-modal',
+  templateUrl: 'modal.html'
+})
+export class DialogClass implements OnInit,AfterViewInit {
 
+  constructor(public dialogRef: MatDialogRef<DialogClass>) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  ngOnInit(){}
+
+  ngAfterViewInit(){
+   jwplayer("mediaplayer").setup({
+      file: "/assets/audio/voz.mp3",
+      height: 180,
+      width: 350,
+      autostart: true,
+      controls: true
+    }) ;
+  }
 
 }

@@ -4,18 +4,16 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { APP_BASE_HREF } from "@angular/common";
 import { RouterModule } from "@angular/router";
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './modulos/material/material.module'
 import { DataTablesModule } from 'angular-datatables';
 import { AsyncLocalStorageModule  } from 'angular-async-local-storage';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { ImageUploadModule } from "angular2-image-upload";
-
-
 import { UploadModule } from './modulos/upload/upload.module';
+import { AppComponent } from './app.component';
 import { JwPlayerModule } from 'ng2-jwplayer/ng2-jwplayer';
 
-import { AppComponent } from './app.component';
 //import { SesionService } from './servicios/sesion.service'
 import { LoginComponent } from './componentes/login/login.component';
 import { InicioComponent } from './componentes/inicio/inicio.component';
@@ -24,7 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CuentaComponent } from './componentes/cuenta/cuenta.component';
 import { CrearConcursoComponent } from './componentes/concurso/crear-concurso/crear-concurso.component';
 import { CatalogoConcursoComponent } from './componentes/concurso/catalogo-concurso/catalogo-concurso.component';
-import { HomeConcursoComponent } from './componentes/home-concurso/home-concurso.component';
+import { DialogClass, HomeConcursoComponent} from './componentes/home-concurso/home-concurso.component';
 import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/editar-concurso.component";
 
 @NgModule({
@@ -37,7 +35,8 @@ import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/ed
     CrearConcursoComponent,
     CatalogoConcursoComponent,
     HomeConcursoComponent,
-    EditarConcursoComponent
+    EditarConcursoComponent,
+    DialogClass
   ],
   imports: [
     BrowserModule,
@@ -97,6 +96,7 @@ import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/ed
       ]
     )
   ],
+  entryComponents: [DialogClass],
   providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
