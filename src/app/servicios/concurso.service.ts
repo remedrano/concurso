@@ -17,6 +17,10 @@ export class ConcursoService {
     });
   }
 
+  editarConcurso() : Observable<Concurso>{
+    return this.http.get<Concurso>('assets/baseDatos/concurso.json');
+  }
+
   catalogoConcurso() : Observable<Concurso[]>{
     return this.http.get<Concurso[]>('assets/baseDatos/datos.json');
   }
