@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators,AbstractControl } from '@angular/forms';
 import { LoginService  } from '../../servicios/login.service';
 import { Router} from '@angular/router';
-import {SesionService} from "../../servicios/sesion.service";
+import { SesionService } from "../../servicios/sesion.service";
 
 function passwordConfirming(c: AbstractControl): any {
   if(!c.parent || !c) return;
@@ -12,7 +12,6 @@ function passwordConfirming(c: AbstractControl): any {
   if(!pwd || !cpwd) return ;
   if (pwd.value !== cpwd.value) {
     return { invalid: true };
-
   }
 }
 
@@ -51,7 +50,8 @@ export class CuentaComponent implements OnInit {
       secondName: ['', Validators.required],
       firstLastName: ['', Validators.required],
       secondLastName: ['', Validators.required],
-      email: ['', Validators.compose([Validators.required, Validators.email])],
+      //email: ['', Validators.compose([Validators.required, Validators.email])],
+      email: ['', Validators.required],
       password: ['', Validators.required],
       rolSelect: ['', Validators.required],
       confirmpass: ['', [Validators.required, passwordConfirming]],

@@ -1,5 +1,4 @@
 import { Component, EventEmitter } from '@angular/core';
-
 //import {LoginService} from "./servicios/login.service";
 
 @Component({
@@ -15,5 +14,6 @@ export class AppComponent {
 
   constructor() {
   }
+
 
 }

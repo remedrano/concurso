@@ -40,9 +40,9 @@ export class CrearConcursoComponent implements OnInit {
       recomendacion: ['', Validators.required]
     });
 
-    this.sesionService.sesionActivada().subscribe( value => {
+    /*this.sesionService.sesionActivada().subscribe( value => {
       if( value ) this.router.navigate(['inicio'])
-    })
+    })*/
   }
 
   validarCampos(campo: string) {
