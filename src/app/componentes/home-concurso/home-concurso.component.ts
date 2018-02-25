@@ -1,4 +1,4 @@
-import {Component, OnInit, ChangeDetectorRef, AfterViewInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, AfterViewInit, Inject} from '@angular/core';
 import { ConcursoService } from "../../servicios/concurso.service";
 import {Router,ActivatedRoute} from "@angular/router";
 import { Voz } from "../../modelos/voz";
@@ -75,7 +75,8 @@ export class HomeConcursoComponent implements OnInit {
 
     let dialogRef = this.dialog.open(DialogClass, {
       width: '400px',
-      data: { urlArchivo: urlArchivo }
+      data: { urlArchivo: urlArchivo },
+
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -155,17 +156,23 @@ declare var jwplayer : any;
 })
 export class DialogClass implements OnInit,AfterViewInit {
 
-  constructor(public dialogRef: MatDialogRef<DialogClass>) { }
+  constructor(public dialogRef: MatDialogRef<DialogClass>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  ngOnInit(){}
+  ngOnInit(){
+
+
+
+  }
 
   ngAfterViewInit(){
+
+
    jwplayer("mediaplayer").setup({
-      file: "http://172.12.25.25:9000/assets/audio/voz.mp3",
+      file: "/assets/audio/voz.mp3",
       height: 180,
       width: 350,
       autostart: true,
