@@ -53,7 +53,7 @@ export class CrearConcursoComponent implements OnInit {
   }
 
   enviarFormulario() {
-
+    console.log("quiero saber si aqui está llegando")
     if (this.form.valid) {
       this.loginService.login(this.form.value).subscribe( data => {
 

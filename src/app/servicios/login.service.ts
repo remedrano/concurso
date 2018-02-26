@@ -15,14 +15,9 @@ export class LoginService {
 
   login(usuario: Usuario) : Observable<Usuario>{
 
-    let params =  new HttpParams();
-    params.set( 'email', usuario.email );
-    params.set( 'password', usuario.password );
-    params.set( 'rol', usuario.rol );
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
+    return this.http.post<any>(this.urlServer+'/api/user/login', JSON.stringify(usuario),{ headers:headers } );
 
-    return this.http.post<Usuario>(this.urlServer+'/api/user/login', {
-      params: params
-    });
   }
 
   crearCuenta( usuario : Usuario ) : Observable<any>{

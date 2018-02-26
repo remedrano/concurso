@@ -54,7 +54,7 @@ export class CuentaComponent implements OnInit {
       //email: ['', Validators.compose([Validators.required, Validators.email])],
       email: ['', Validators.required],
       password: ['', Validators.required],
-      rolSelect: ['', Validators.required],
+      rol: ['', Validators.required],
       confirmpass: ['', [Validators.required, passwordConfirming]],
     } );
 
