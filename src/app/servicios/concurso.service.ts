@@ -32,12 +32,21 @@ export class ConcursoService {
     return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
   }
 
-  subirVoz( voz : Voz , usuario : Usuario, archivo: any, idConcurso :number) : Observable<Voz>{
+  subirVoz( datos : any , archivo: any, idConcurso :number) : Observable<Voz>{
 
-    voz.usuario = usuario;
-    voz.archivoOriginal = archivo;
+    let param = new HttpParams();
+    param.append("base64file",archivo );
+    param.append("nameFile",archivo.dirname );
+    param.append("firstName",datos.firstName);
+    param.append("secondName",datos.secondName);
+    param.append("firstLastName",datos.firstLastName);
+    param.append("secondLastName",datos.secondName);
+    param.append("email",datos.email);
+    param.append("observation",datos.observacion);
+    param.append("idcompetition",idConcurso.toString());
+
     const headers = new HttpHeaders ( { 'Content-Type': 'multipart/form-data' } );
-    return this.http.post<Voz>(this.urlServer+'/api/voice', JSON.stringify(voz),{ headers:headers } );
+    return this.http.post<Voz>(this.urlServer+'/api/voice', JSON.stringify(param),{ headers:headers } );
   }
 
   cargarArchivoVoz( archivo : any) : Observable<Voz>{

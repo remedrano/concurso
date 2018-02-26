@@ -2,12 +2,10 @@ import {Component, OnInit, ChangeDetectorRef, AfterViewInit, Inject} from '@angu
 import { ConcursoService } from "../../servicios/concurso.service";
 import {  SesionService } from "../../servicios/sesion.service";
 
-
 import {Router,ActivatedRoute} from "@angular/router";
 import { Voz } from "../../modelos/voz";
 import { Usuario } from "../../modelos/usuario";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { FileUploader , FileLikeObject} from 'ng2-file-upload';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import { Concurso } from '../../modelos/concurso';
@@ -131,6 +129,7 @@ export class HomeConcursoComponent implements OnInit {
         });
 
     }
+    console.log( this.archivo )
     if( this.archivo == null ){
       alert("Debes enviar un archivo de audio");
     }
@@ -139,6 +138,19 @@ export class HomeConcursoComponent implements OnInit {
 
   onClicUrl( ){
     this.valorUrl = this.form.value.urlConcurso
+  }
+
+  onFileChange(input:any) {
+    //var extn = filename.split(".").pop();
+    if (input.files && input.files[0]) {
+      //this.archivo = input.files[0];
+      let reader = new FileReader();
+      reader.onload = function (e: any) {
+        this.archivo = e.target.result;
+      }.bind(this);
+
+      reader.readAsDataURL(input.files[0]);
+    }
   }
 }
 
@@ -166,19 +178,6 @@ export class DialogClass implements OnInit,AfterViewInit {
       autostart: true,
       controls: true
     }) ;
-  }
-
-  onFileChange(input:any) {
-    //var extn = filename.split(".").pop();
-    if (input.files && input.files[0]) {
-      //this.archivo = input.files[0];
-      let reader = new FileReader();
-      reader.onload = function (e: any) {
-        this.archivo = e.target.result;
-      }.bind(this);
-
-      reader.readAsDataURL(input.files[0]);
-    }
   }
 
 }

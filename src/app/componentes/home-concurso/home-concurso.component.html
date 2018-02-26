@@ -2,35 +2,6 @@
 
   <br><br>
 
-
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Información del concurso :
-        </mat-panel-title>
-        <mat-panel-description>
-          {{concurso.nombreConcurso}}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-grid-list cols="4" rowHeight="20px">
-        <mat-grid-tile class="left-align left "><b>Url :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.urlConcurso}} </mat-grid-tile>
-        <mat-grid-tile><b>Valor a pagar ($) :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.valorPagar}} </mat-grid-tile>
-        <mat-grid-tile><b>Fecha inicio :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.fechaInicioConcurso}} </mat-grid-tile>
-        <mat-grid-tile><b>Fecha Fin :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.fechaFinConcurso}} </mat-grid-tile>
-        <mat-grid-tile><b>Guión :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.guion}} </mat-grid-tile>
-        <mat-grid-tile><b>Recomendación :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.recomendacion}} </mat-grid-tile>
-
-      </mat-grid-list>
-
-    </mat-expansion-panel>
-  </mat-accordion>
   <div class="divider divider"></div>
   <br><br>
 
@@ -109,9 +80,7 @@
           </mat-grid-tile>
 
           <mat-grid-tile >
-            <div >
-              <input type="file" #archivoVoz (change)="onFileChange(archivoVoz)" required>
-            </div>
+              <input type="file" #inputFile (change)="onFileChange(inputFile)" required>
           </mat-grid-tile>
 
           <mat-grid-tile [colspan]="2">
