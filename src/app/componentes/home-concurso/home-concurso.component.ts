@@ -1,5 +1,8 @@
 import {Component, OnInit, ChangeDetectorRef, AfterViewInit, Inject} from '@angular/core';
 import { ConcursoService } from "../../servicios/concurso.service";
+import {  SesionService } from "../../servicios/sesion.service";
+
+
 import {Router,ActivatedRoute} from "@angular/router";
 import { Voz } from "../../modelos/voz";
 import { Usuario } from "../../modelos/usuario";
@@ -14,7 +17,8 @@ import { Concurso } from '../../modelos/concurso';
   templateUrl: './home-concurso.component.html',
   styleUrls: ['./home-concurso.component.css'],
   providers: [
-    ConcursoService
+    ConcursoService,
+    SesionService
   ]
 })
 
@@ -40,7 +44,9 @@ export class HomeConcursoComponent implements OnInit {
      private router : Router,
      private route: ActivatedRoute,
      private cd: ChangeDetectorRef ,
-     public dialog: MatDialog) { }
+     public dialog: MatDialog,
+     public sesionService : SesionService
+  ) { }
 
   ngOnInit( ) {
 
