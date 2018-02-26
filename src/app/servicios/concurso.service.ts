@@ -14,7 +14,7 @@ export class ConcursoService {
 
   crearConcurso(concurso: Concurso, archivo : any ) : Observable<Concurso>{
     concurso.imagenConcurso = archivo;
-    const headers = new HttpHeaders ( { 'Content-Type': 'multipart/form-data' } );
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
     return this.http.post<Concurso>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
   }
 
@@ -35,12 +35,25 @@ export class ConcursoService {
     return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
   }
 
-  subirVoz( voz : Voz , usuario : Usuario, archivo: any, idConcurso :number) : Observable<Voz>{
+  subirVoz( voz : any , usuario : Usuario, archivo: File, idConcurso :number) : Observable<Voz>{
 
     voz.usuario = usuario;
-    voz.archivoOriginal = archivo;
-    const headers = new HttpHeaders ( { 'Content-Type': 'multipart/form-data' } );
-    return this.http.post<Voz>(this.urlServer+'/api/voice', JSON.stringify(voz),{ headers:headers } );
+    voz.base64file = archivo;
+    //const headers = new HttpHeaders ( { 'Content-Type': 'multipart/form-data' } );
+    const formData: FormData = new FormData();
+    formData.append('base64file', archivo);
+    formData.append('firstName', voz.firstName);
+    formData.append('secondName', voz.secondName);
+    formData.append('firstLastName', voz.firstLastName);
+    formData.append('secondLastName', voz.secondLastName);
+    formData.append('email', voz.email);
+    formData.append('observation', voz.observation);
+    formData.append('nameFile', voz.nameFile);
+    formData.append('idcompetition', voz.idcompetition);
+
+
+    //return this.http.request('POST', this.urlServer+'/api/voice', {body: voz, headers:headers});
+    return this.http.post<Voz>(this.urlServer+'/api/voice', formData );
   }
 
   cargarArchivoVoz( archivo : any) : Observable<Voz>{
@@ -49,13 +62,13 @@ export class ConcursoService {
     });
   }
 
-  cargarConcurso( idConcurso : number, urlConcurso : string ) : Observable<Concurso>{
+  cargarConcurso( idConcurso : string, urlConcurso : string ) : Observable<Concurso>{
 
     let params = new HttpParams();
-    if( idConcurso != null ) params.append("idConcurso" , idConcurso.toString()  );
-    if( urlConcurso != null ) params.append("nombreConcurso" , urlConcurso );
+    //if( idConcurso != null ) params.append("idConcurso" , idConcurso.toString()  );
+    //if( urlConcurso != null ) params.append("nombreConcurso" , urlConcurso );
 
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.get<Concurso>(this.urlServer+'/api/',{params });
+    return this.http.get<Concurso>(this.urlServer+'/api/concurso/6ff58e89-98a6-4285-837f-1a8e1957d352');
   }
 }

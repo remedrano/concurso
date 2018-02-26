@@ -36,7 +36,7 @@ export class HomeConcursoComponent implements OnInit {
   private envioFormulario: boolean;
   private isLoggedIn : boolean;
   public valorUrl : string;
-  public archivo : any;
+  public archivo : File;
 
   constructor(
      private fb: FormBuilder,
@@ -55,7 +55,10 @@ export class HomeConcursoComponent implements OnInit {
       firstLastName: ['', Validators.required],
       secondLastName: ['', Validators.required],
       email: ['', Validators.compose([Validators.required, Validators.email])],
-      observacion: ['', Validators.required]
+      observation: ['', Validators.required],
+      nameFile: ['cualquiercosa.mp3', Validators.required],
+      idcompetition: ['6ff58e89-98a6-4285-837f-1a8e1957d352', Validators.required],
+      base64file: ['6ff58e89-98a6-4285-837f-1a8e1957d352', Validators.required],
     });
 
     let param = this.route.params.subscribe( params => this.params = (params) );
@@ -106,6 +109,20 @@ export class HomeConcursoComponent implements OnInit {
     );
   }
 
+  onFileChangeRafa(input:any) {
+    console.log("claro que si llega")
+    //var extn = filename.split(".").pop();
+    if (input.files && input.files[0]) {
+      //this.archivo = input.files[0];
+      let reader = new FileReader();
+      reader.onload = function (e: any) {
+        this.archivo = input.files[0];
+      }.bind(this);
+
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
   enviarFormulario() {
 
     if (this.form.valid && this.archivo != null ) {
@@ -113,7 +130,7 @@ export class HomeConcursoComponent implements OnInit {
 
       let param = this.route.params.subscribe( params => this.params = (params) );
 
-      this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
+      this.concursoService.cargarConcurso( '6ff58e89-98a6-4285-837f-1a8e1957d352' , param["nombre"]).subscribe( data => {
 
         if( data != null){//Busco el id del concurso por el nombre
           this.concursoService.subirVoz(this.form.value, usuario , this.archivo , data.id).subscribe( data => {
@@ -170,17 +187,6 @@ export class DialogClass implements OnInit,AfterViewInit {
     }) ;
   }
 
-  onFileChange(input:any) {
-    //var extn = filename.split(".").pop();
-    if (input.files && input.files[0]) {
-      //this.archivo = input.files[0];
-      let reader = new FileReader();
-      reader.onload = function (e: any) {
-        this.archivo = e.target.result;
-      }.bind(this);
 
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
 
 }
