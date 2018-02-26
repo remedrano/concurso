@@ -12,7 +12,6 @@ import { LocalStorageModule } from 'angular-2-local-storage';
 import { ImageUploadModule } from "angular2-image-upload";
 import { UploadModule } from './modulos/upload/upload.module';
 import { AppComponent } from './app.component';
-import { JwPlayerModule } from 'ng2-jwplayer/ng2-jwplayer';
 
 //import { SesionService } from './servicios/sesion.service'
 import { LoginComponent } from './componentes/login/login.component';
@@ -51,7 +50,6 @@ import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/ed
     ImageUploadModule.forRoot(),
     AsyncLocalStorageModule,
     UploadModule,
-    JwPlayerModule,
     LocalStorageModule.withConfig({
       prefix: 'concurso',
       storageType: 'localStorage'

@@ -110,8 +110,8 @@
           </mat-grid-tile>
 
           <mat-grid-tile >
-            <div ng2FileDrop  [uploader]="uploader">
-              <input type="file" ng2FileSelect [uploader]="uploader" multiple />
+            <div >
+              <input type="file" #archivoVoz (change)="onFileChange(archivoVoz)" required>
             </div>
           </mat-grid-tile>
 

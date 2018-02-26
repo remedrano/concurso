@@ -4,7 +4,8 @@ export interface Voz {
   usuario: Usuario,
   fechaSubida: string,
   estadoVoz: string,
-  archivoOriginal: string,
+  archivoOriginal: any,
   archivoConvertida: string,
   idVoz: number,
+  idConcurso: number
 }

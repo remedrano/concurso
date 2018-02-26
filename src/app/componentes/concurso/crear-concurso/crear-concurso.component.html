@@ -54,16 +54,17 @@
               <mat-error *ngIf="validarCampos('recomendacion')"> Recomendación obligatorio</mat-error>
             </mat-form-field>
           </mat-grid-tile>
-
         </mat-grid-list>
+
+        <div>
+          <input type="file" #imagenConcurso (change)="onFileChange(imagenConcurso)" required>
+        </div>
         <br>
-        <image-upload
-          url="https://httpbin.org/status/200"
-          buttonCaption="Banner o imagen"
-          dropBoxMessage="Arrastra imagen"
-          clearButtonCaption="Eliminar"
-        ></image-upload>
+        <div>
+          <canvas height="80" width="300" id="photoPreview"></canvas>
+        </div>
         <br>
+
         <mat-divider></mat-divider>
         <br>
         <button mat-raised-button color="primary" type="submit" >Guardar</button>

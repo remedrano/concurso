@@ -12,9 +12,10 @@ export class ConcursoService {
 
   constructor( private http: HttpClient ) { }
 
-  crearConcurso(concurso: Concurso) : Observable<Concurso>{
-    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.post<any>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
+  crearConcurso(concurso: Concurso, archivo : any ) : Observable<Concurso>{
+    concurso.imagenConcurso = archivo;
+    const headers = new HttpHeaders ( { 'Content-Type': 'multipart/form-data' } );
+    return this.http.post<Concurso>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
   }
 
   catalogoConcurso() : Observable<Concurso[]>{
@@ -30,11 +31,12 @@ export class ConcursoService {
     return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
   }
 
-  subirVoz( voz : Voz , usuario : Usuario) : Observable<Voz>{
+  subirVoz( voz : Voz , usuario : Usuario, archivo: any, idConcurso :number) : Observable<Voz>{
 
     voz.usuario = usuario;
-    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.post<any>(this.urlServer+'/api/voice', JSON.stringify(voz),{ headers:headers } );
+    voz.archivoOriginal = archivo;
+    const headers = new HttpHeaders ( { 'Content-Type': 'multipart/form-data' } );
+    return this.http.post<Voz>(this.urlServer+'/api/voice', JSON.stringify(voz),{ headers:headers } );
   }
 
   cargarArchivoVoz( archivo : any) : Observable<Voz>{
