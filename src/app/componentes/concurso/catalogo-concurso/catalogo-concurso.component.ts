@@ -19,7 +19,7 @@ export class CatalogoConcursoComponent implements OnInit {
                private router : Router) { }
 
   ngOnInit() {
-    this.concursoService.catalogoConcurso().subscribe( data => {
+    this.concursoService.catalogoConcurso( ).subscribe( data => {
       this.concursos = data;
     }, err => {
       console.log(err);

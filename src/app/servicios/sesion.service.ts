@@ -32,6 +32,11 @@ export class SesionService {
     this.sesion.next( false );
   }
 
+  getDataSesion() : Usuario{
+    let usuarioLocal = <Usuario>this.localStorageService.get("usuario");
+    return usuarioLocal;
+  }
+
   iniciarSesion(usuario : Usuario){
 
     let usuarioLocal = this.localStorageService.get("usuario");

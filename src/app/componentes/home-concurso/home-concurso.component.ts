@@ -1,5 +1,8 @@
 import {Component, OnInit, ChangeDetectorRef, AfterViewInit, Inject} from '@angular/core';
 import { ConcursoService } from "../../servicios/concurso.service";
+import {  SesionService } from "../../servicios/sesion.service";
+
+
 import {Router,ActivatedRoute} from "@angular/router";
 import { Voz } from "../../modelos/voz";
 import { Usuario } from "../../modelos/usuario";
@@ -7,21 +10,23 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FileUploader , FileLikeObject} from 'ng2-file-upload';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
+import { Concurso } from '../../modelos/concurso';
 
 @Component({
   selector: 'app-home-concurso',
   templateUrl: './home-concurso.component.html',
   styleUrls: ['./home-concurso.component.css'],
   providers: [
-    ConcursoService
+    ConcursoService,
+    SesionService
   ]
 })
 
 export class HomeConcursoComponent implements OnInit {
 
-  public uploader:FileUploader
   public voces : Voz[];
   public params : any;
+  public concurso : Concurso;
 
   errorMessageFile: string;
   allowedMimeType = ['audio/wav','audio/mp3','audio/ogg'];
@@ -31,6 +36,7 @@ export class HomeConcursoComponent implements OnInit {
   private envioFormulario: boolean;
   private isLoggedIn : boolean;
   public valorUrl : string;
+  public archivo : any;
 
   constructor(
      private fb: FormBuilder,
@@ -38,19 +44,11 @@ export class HomeConcursoComponent implements OnInit {
      private router : Router,
      private route: ActivatedRoute,
      private cd: ChangeDetectorRef ,
-     public dialog: MatDialog) { }
+     public dialog: MatDialog,
+     public sesionService : SesionService
+  ) { }
 
   ngOnInit( ) {
-
-    this.uploader = new FileUploader({
-      url: "http://localhost:4200/assets/",
-      allowedMimeType: this.allowedMimeType,
-      headers: [{name:'Accept', value:'application/json'}],
-      autoUpload: false,
-      maxFileSize: this.maxFileSize,
-    });
-    this.uploader.onWhenAddingFileFailed = (item, filter, options) => this.onWhenAddingFileFailed(item, filter, options);
-
     this.form = this.fb.group({
       firstName: ['', Validators.required],
       secondName: ['', Validators.required],
@@ -60,16 +58,24 @@ export class HomeConcursoComponent implements OnInit {
       observacion: ['', Validators.required]
     });
 
-    this.route.params.subscribe( params => this.params = (params) );
+    let param = this.route.params.subscribe( params => this.params = (params) );
+    this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
 
-    this.concursoService.catalogoVoces().subscribe( data => {
-      this.voces = data;
+      this.concurso = data;
+      if( this.concurso != null ) {
+
+        this.concursoService.catalogoVoces(data.id).subscribe(data => {
+          this.voces = data;
+        }, err => {
+          console.log(err);
+        });
+      }
+
     }, err => {
       console.log(err);
     });
 
   }
-
 
   reproducirAudio( urlArchivo ): void {
 
@@ -102,21 +108,33 @@ export class HomeConcursoComponent implements OnInit {
 
   enviarFormulario() {
 
-    if (this.form.valid) {
-      this.concursoService.subirVoz(this.form.value).subscribe( data => {
+    if (this.form.valid && this.archivo != null ) {
+      let usuario = this.sesionService.getDataSesion();
 
-        if( data["code"] == 0 && data != null ){ //Registro almacenado
-          this.uploader.uploadAll(); //Almacenar archivo
-          alert("Registro almacenada!");
+      let param = this.route.params.subscribe( params => this.params = (params) );
+
+      this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
+
+        if( data != null){//Busco el id del concurso por el nombre
+          this.concursoService.subirVoz(this.form.value, usuario , this.archivo , data.id).subscribe( data => {
+            if( data["code"] == 0 && data != null ){ //Registro almacenado
+              alert("Registro almacenada!");
+            }
+            else{
+              alert("Error almacenando datos")
+            }
+
+          }, err => {
+            console.log(err);
+          });
         }
-        else{
-          alert("Error almacenando datos")
-        }
+        }, err => {
+          console.log(err);
+        });
 
-      }, err => {
-        console.log(err);
-      });
-
+    }
+    if( this.archivo == null ){
+      alert("Debes enviar un archivo de audio");
     }
     this.envioFormulario = true;
   }
@@ -124,30 +142,8 @@ export class HomeConcursoComponent implements OnInit {
   onClicUrl( ){
     this.valorUrl = this.form.value.urlConcurso
   }
-
-
-  //Validación de subida de archivo
-
-  onWhenAddingFileFailed(item: FileLikeObject, filter: any, options: any) {
-    switch (filter.name) {
-      case 'fileSize':
-        this.errorMessageFile = `Máxima tamaño de archivo excedido (${item.size} de ${this.maxFileSize} permitido )`;
-        alert( this.errorMessageFile  );
-        console.log( this.errorMessageFile );
-        break;
-      case 'mimeType':
-        const allowedTypes = this.allowedMimeType.join();
-        this.errorMessageFile = `Tipo "${item.type} no es soportado. Solo se aceptan extensiones de del tipo : "${allowedTypes}"`;
-        alert( this.errorMessageFile  );
-        console.log( this.errorMessageFile );
-        break;
-      default:
-        this.errorMessageFile = `Error desconocido (filtro es ${filter.name})`;
-        alert( this.errorMessageFile  );
-        console.log( this.errorMessageFile );
-    }
-  }
 }
+
 declare var jwplayer : any;
 
 @Component({
@@ -162,15 +158,9 @@ export class DialogClass implements OnInit,AfterViewInit {
     this.dialogRef.close();
   }
 
-  ngOnInit(){
-
-
-
-  }
+  ngOnInit(){}
 
   ngAfterViewInit(){
-
-
    jwplayer("mediaplayer").setup({
       file: "/assets/audio/voz.mp3",
       height: 180,
@@ -178,6 +168,19 @@ export class DialogClass implements OnInit,AfterViewInit {
       autostart: true,
       controls: true
     }) ;
+  }
+
+  onFileChange(input:any) {
+    //var extn = filename.split(".").pop();
+    if (input.files && input.files[0]) {
+      //this.archivo = input.files[0];
+      let reader = new FileReader();
+      reader.onload = function (e: any) {
+        this.archivo = e.target.result;
+      }.bind(this);
+
+      reader.readAsDataURL(input.files[0]);
+    }
   }
 
 }

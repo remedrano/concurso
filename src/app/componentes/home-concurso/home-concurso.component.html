@@ -5,29 +5,31 @@
 
   <mat-card>
     <mat-card-content>
-      <table >
+      <table class="table" >
         <tbody>
         <tr class="mat-row">
-          <td class="right-align mat-calendar-body-label text-darken-1 "><mat-label><b>Nombre :</b></mat-label></td>
-          <td colspan="3" class="left-align mat-calendar-body-label">Ejemplo</td>
-          <td class="right-align mat-calendar-body-label"><mat-label><b>Valor a pagar :</b></mat-label></td>
-          <td class="left-align mat-calendar-body-label"><mat-label>Este</mat-label></td>
+          <td class="right-align mat-calendar-body-label text-darken-1 ">
+            <mat-label>Nombre :</mat-label>
+          </td>
+          <td colspan="3" class="left-align mat-calendar-body-label">{{concurso.nombreConcurso}}</td>
+          <td class="right-align mat-calendar-body-label"><mat-label>Valor a pagar ($) :</mat-label></td>
+          <td class="left-align mat-calendar-body-label"><mat-label>{{concurso.valorPagar}}</mat-label></td>
         </tr>
         <tr>
           <td class="right-align mat-calendar-body-label"><mat-label><b>Fecha inicio :</b></mat-label></td>
-          <td class="left-align mat-calendar-body-label"><mat-label>Este</mat-label></td>
+          <td class="left-align mat-calendar-body-label"><mat-label>{{concurso.fechaInicioConcurso}}</mat-label></td>
           <td class="right-align mat-calendar-body-label"><mat-label ><b>Fecha Fin :</b></mat-label></td>
-          <td class="left-align mat-calendar-body-label"><mat-label>Ejemplo</mat-label></td>
+          <td class="left-align mat-calendar-body-label"><mat-label>{{concurso.fechaFinConcurso}}</mat-label></td>
           <td class="right-align mat-calendar-body-label"><mat-label><b>Url : </b></mat-label></td>
-          <td class="left-align mat-calendar-body-label"><mat-label>Este</mat-label></td>
+          <td class="left-align mat-calendar-body-label"><mat-label>{{concurso.urlConcurso}}</mat-label></td>
         </tr>
         <tr>
           <td class="right-align mat-calendar-body-label"><mat-label ><b>Guión :</b></mat-label></td>
-          <td class="left-align mat-calendar-body-label" colspan="3"><mat-label>Ejemplo</mat-label></td>
+          <td class="left-align mat-calendar-body-label" colspan="3"><mat-label>{{concurso.guion}}</mat-label></td>
         </tr>
         <tr>
           <td class="right-align mat-calendar-body-label"><mat-label><b>Recomendación : </b></mat-label></td>
-          <td class="left-align mat-calendar-body-label" colspan="3"><mat-label>Este</mat-label></td>
+          <td class="left-align mat-calendar-body-label" colspan="3"><mat-label>{{concurso.recomendacion}}</mat-label></td>
         </tr>
         </tbody>
       </table>
@@ -108,8 +110,8 @@
           </mat-grid-tile>
 
           <mat-grid-tile >
-            <div ng2FileDrop  [uploader]="uploader">
-              <input type="file" ng2FileSelect [uploader]="uploader" multiple />
+            <div >
+              <input type="file" #archivoVoz (change)="onFileChange(archivoVoz)" required>
             </div>
           </mat-grid-tile>
 
@@ -130,8 +132,3 @@
     </mat-card-content>
   </mat-card>
   </div>
-
-
-
-
-

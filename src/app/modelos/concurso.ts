@@ -1,6 +1,6 @@
 export interface Concurso {
   nombreConcurso: string,
-  imagenConcurso: string,
+  imagenConcurso: any,
   urlConcurso: string,
   fechaInicioConcurso: string,
   fechaFinConcurso: string,
