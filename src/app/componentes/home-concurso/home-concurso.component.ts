@@ -58,8 +58,8 @@ export class HomeConcursoComponent implements OnInit {
       observacion: ['', Validators.required]
     });
 
-    let param = this.route.params.subscribe( params => this.params = (params) );
-    this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
+    this.route.params.subscribe( params => this.params = (params) );
+    this.concursoService.cargarConcurso( null , this.params["nombre"]).subscribe( data => {
 
       this.concurso = data;
       if( this.concurso != null ) {

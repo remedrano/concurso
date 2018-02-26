@@ -48,13 +48,13 @@ export class ConcursoService {
   cargarConcurso( idConcurso : number, urlConcurso : string ) : Observable<Concurso>{
 
     let params = new HttpParams(); let filtro :string;
-    if( idConcurso != null ){
-      filtro+=idConcurso.toString()
-    }
-      //params.append("idConcurso" , idConcurso.toString()  );
-    if( urlConcurso != null ){
-      //params.append("nombreConcurso" , urlConcurso );
-      filtro+= urlConcurso;
+    console.log( idConcurso );
+    if( idConcurso != null  && idConcurso != undefined && idConcurso.toString() != "undefined" ){
+      filtro=idConcurso.toString()
+    }else{
+      if( urlConcurso != null && urlConcurso != undefined && urlConcurso != "undefined"){
+        filtro= urlConcurso;
+      }
     }
 
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
