@@ -109,14 +109,12 @@ export class HomeConcursoComponent implements OnInit {
   enviarFormulario() {
 
     if (this.form.valid && this.archivo != null ) {
-      let usuario = this.sesionService.getDataSesion();
+      this.route.params.subscribe( params => this.params = (params) );
 
-      let param = this.route.params.subscribe( params => this.params = (params) );
-
-      this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
+      this.concursoService.cargarConcurso( null , this.params["nombre"]).subscribe( data => {
 
         if( data != null){//Busco el id del concurso por el nombre
-          this.concursoService.subirVoz(this.form.value, usuario , this.archivo , data.id).subscribe( data => {
+          this.concursoService.subirVoz(this.form.value , this.archivo , data.id).subscribe( data => {
             if( data["code"] == 0 && data != null ){ //Registro almacenado
               alert("Registro almacenada!");
             }

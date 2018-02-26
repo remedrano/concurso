@@ -12,8 +12,9 @@ export class ConcursoService {
 
   constructor( private http: HttpClient ) { }
 
-  crearConcurso(concurso: Concurso, archivo : any ) : Observable<Concurso>{
+  crearConcurso(concurso: Concurso, idUsuario:number, archivo : any ) : Observable<Concurso>{
     concurso.imagenConcurso = archivo;
+    concurso.idUsuarioCreador
     const headers = new HttpHeaders ( { 'Content-Type': 'multipart/form-data' } );
     return this.http.post<Concurso>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
   }

@@ -27,8 +27,17 @@ export class LoginService {
 
   crearCuenta( usuario : Usuario ) : Observable<any>{
 
+    let param = new HttpParams(); //por tiempo s realizo asi , se debe cambiar
+    param.append( "firstName", usuario.firstName);
+    param.append( "secondName", usuario.secondName);
+    param.append( "firstLastName", usuario.firstLastName);
+    param.append( "secondLastName", usuario.secondLastName);
+    param.append( "email", usuario.email);
+    param.append( "rol", usuario.rol);
+    param.append( "password", usuario.password);
+
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.post<any>(this.urlServer+'/api/user', JSON.stringify(usuario), { headers: headers}  );
+    return this.http.post<any>(this.urlServer+'/api/user', JSON.stringify(param), { headers: headers}  );
   }
 
   logout() {

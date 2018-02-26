@@ -63,8 +63,9 @@ export class CrearConcursoComponent implements OnInit {
 
     if (this.form.valid && this.archivo != null ) {
       this.route.params.subscribe( params => this.params = (params) );
+      let usuario = this.sesionService.getDataSesion();
 
-      this.concurso.crearConcurso(this.form.value , this.archivo).subscribe( data => {
+      this.concurso.crearConcurso(this.form.value , usuario.id ,this.archivo).subscribe( data => {
         if( data["code"] == 0 && data != null ) //Usuario consultado
           alert("Concurso almacenado!");
         else{
