@@ -56,7 +56,6 @@ export class ConcursoService {
     if( urlConcurso != null ) params.append("nombreConcurso" , urlConcurso );
 
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.post<Concurso>(this.urlServer+'/api/voice', JSON.stringify(params),{ headers:headers } );
-
+    return this.http.get<Concurso>(this.urlServer+'/api/',{params });
   }
 }

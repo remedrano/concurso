@@ -3,38 +3,20 @@
   <div class="divider divider"></div>
   <h5 class="center">Información del concurso</h5>
 
-  <mat-card>
-    <mat-card-content>
-      <table class="table" >
-        <tbody>
-        <tr class="mat-row">
-          <td class="right-align mat-calendar-body-label text-darken-1 ">
-            <mat-label>Nombre :</mat-label>
-          </td>
-          <td colspan="3" class="left-align mat-calendar-body-label">{{concurso.nombreConcurso}}</td>
-          <td class="right-align mat-calendar-body-label"><mat-label>Valor a pagar ($) :</mat-label></td>
-          <td class="left-align mat-calendar-body-label"><mat-label>{{concurso.valorPagar}}</mat-label></td>
-        </tr>
-        <tr>
-          <td class="right-align mat-calendar-body-label"><mat-label><b>Fecha inicio :</b></mat-label></td>
-          <td class="left-align mat-calendar-body-label"><mat-label>{{concurso.fechaInicioConcurso}}</mat-label></td>
-          <td class="right-align mat-calendar-body-label"><mat-label ><b>Fecha Fin :</b></mat-label></td>
-          <td class="left-align mat-calendar-body-label"><mat-label>{{concurso.fechaFinConcurso}}</mat-label></td>
-          <td class="right-align mat-calendar-body-label"><mat-label><b>Url : </b></mat-label></td>
-          <td class="left-align mat-calendar-body-label"><mat-label>{{concurso.urlConcurso}}</mat-label></td>
-        </tr>
-        <tr>
-          <td class="right-align mat-calendar-body-label"><mat-label ><b>Guión :</b></mat-label></td>
-          <td class="left-align mat-calendar-body-label" colspan="3"><mat-label>{{concurso.guion}}</mat-label></td>
-        </tr>
-        <tr>
-          <td class="right-align mat-calendar-body-label"><mat-label><b>Recomendación : </b></mat-label></td>
-          <td class="left-align mat-calendar-body-label" colspan="3"><mat-label>{{concurso.recomendacion}}</mat-label></td>
-        </tr>
-        </tbody>
-      </table>
-    </mat-card-content>
-  </mat-card>
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Nombre :
+        </mat-panel-title>
+        <mat-panel-description>
+         {{concurso.nombreConcurso}}
+          - más información
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+    </mat-expansion-panel>
+  </mat-accordion>
 
   <h5 class="center">Listado de audios</h5>
 
