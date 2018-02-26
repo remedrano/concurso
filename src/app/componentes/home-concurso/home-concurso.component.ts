@@ -7,6 +7,8 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FileUploader , FileLikeObject} from 'ng2-file-upload';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
+import { Concurso } from '../../modelos/concurso';
+
 @Component({
   selector: 'app-home-concurso',
   templateUrl: './home-concurso.component.html',
@@ -21,6 +23,7 @@ export class HomeConcursoComponent implements OnInit {
   public uploader:FileUploader
   public voces : Voz[];
   public params : any;
+  public concurso : Concurso;
 
   errorMessageFile: string;
   allowedMimeType = ['audio/wav','audio/mp3','audio/ogg'];
@@ -59,13 +62,24 @@ export class HomeConcursoComponent implements OnInit {
       observacion: ['', Validators.required]
     });
 
-    this.route.params.subscribe( params => this.params = (params) );
+    let param = this.route.params.subscribe( params => this.params = (params) );
 
-    this.concursoService.catalogoVoces().subscribe( data => {
-      this.voces = data;
+    this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
+
+      this.concurso = data;
+      if( this.concurso != null ) {
+
+        this.concursoService.catalogoVoces(data.id).subscribe(data => {
+          this.voces = data;
+        }, err => {
+          console.log(err);
+        });
+      }
+
     }, err => {
       console.log(err);
     });
+
 
   }
 
@@ -101,7 +115,8 @@ export class HomeConcursoComponent implements OnInit {
   enviarFormulario() {
 
     if (this.form.valid) {
-      this.concursoService.subirVoz(this.form.value).subscribe( data => {
+      let usuario = this.sesionService.getDataSesion();
+      this.concursoService.subirVoz(this.form.value, usuario).subscribe( data => {
 
         if( data["code"] == 0 && data != null ){ //Registro almacenado
           this.uploader.uploadAll(); //Almacenar archivo

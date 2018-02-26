@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Concurso } from "../modelos/concurso";
+import { Usuario } from "../modelos/usuario";
 import { Voz } from "../modelos/voz";
 import { HttpClient, HttpParams,HttpHeaders} from "@angular/common/http";
 import { Observable} from "rxjs/Observable";
@@ -25,12 +26,14 @@ export class ConcursoService {
     return this.http.get('assets/baseDatos/eliminar.json',{params });
   }
 
-  catalogoVoces() : Observable<Voz[]>{
-    return this.http.get<Voz[]>(this.urlServer+'/api/');
+  catalogoVoces( idConcurso ) : Observable<Voz[]>{
+    return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
   }
 
-  subirVoz( voz : Voz) : Observable<Voz>{
-    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' , 'Access-Control-Allow-Origin':'*'} );
+  subirVoz( voz : Voz , usuario : Usuario) : Observable<Voz>{
+
+    voz.usuario = usuario;
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
     return this.http.post<any>(this.urlServer+'/api/voice', JSON.stringify(voz),{ headers:headers } );
   }
 
@@ -38,5 +41,16 @@ export class ConcursoService {
     return this.http.post<Voz>('assets/baseDatos/usuarios.json', {
       params: archivo
     });
+  }
+
+  cargarConcurso( idConcurso : number, urlConcurso : string ) : Observable<Concurso>{
+
+    let params = new HttpParams();
+    if( idConcurso != null ) params.append("idConcurso" , idConcurso.toString()  );
+    if( urlConcurso != null ) params.append("nombreConcurso" , urlConcurso );
+
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
+    return this.http.post<Concurso>(this.urlServer+'/api/voice', JSON.stringify(params),{ headers:headers } );
+
   }
 }
