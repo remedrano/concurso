@@ -53,7 +53,7 @@ export class CuentaComponent implements OnInit {
       //email: ['', Validators.compose([Validators.required, Validators.email])],
       email: ['', Validators.required],
       password: ['', Validators.required],
-      rolSelect: ['', Validators.required],
+      rol: ['', Validators.required],
       confirmpass: ['', [Validators.required, passwordConfirming]],
     } );
 
@@ -72,6 +72,7 @@ export class CuentaComponent implements OnInit {
   enviarFormulario() {
 
     if (this.form.valid) {
+
       this.loginService.crearCuenta(this.form.value).subscribe( data => {
 
         if( data["code"] == 1 && data != null ) //Usuario consultado

@@ -7,6 +7,8 @@ import { Observable} from "rxjs/Observable";
 @Injectable()
 export class ConcursoService {
 
+  private urlServer : string = 'http://172.24.101.80:9000';
+
   constructor( private http: HttpClient ) { }
 
   crearConcurso(concurso: Concurso) : Observable<Concurso>{
@@ -26,13 +28,12 @@ export class ConcursoService {
   }
 
   catalogoVoces() : Observable<Voz[]>{
-    return this.http.get<Voz[]>('assets/baseDatos/audios.json');
+    return this.http.get<Voz[]>(this.urlServer+'/api/');
   }
 
   subirVoz( voz : Voz) : Observable<Voz>{
-    return this.http.post<Voz>('assets/baseDatos/usuarios.json', {
-      params: voz
-    });
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' , 'Access-Control-Allow-Origin':'*'} );
+    return this.http.post<any>(this.urlServer+'/api/voice', JSON.stringify(voz),{ headers:headers } );
   }
 
   cargarArchivoVoz( archivo : any) : Observable<Voz>{

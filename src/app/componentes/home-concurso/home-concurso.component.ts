@@ -7,7 +7,6 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { FileUploader , FileLikeObject} from 'ng2-file-upload';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
-
 @Component({
   selector: 'app-home-concurso',
   templateUrl: './home-concurso.component.html',
@@ -43,7 +42,7 @@ export class HomeConcursoComponent implements OnInit {
   ngOnInit( ) {
 
     this.uploader = new FileUploader({
-      url: "http://localhost:4200/assets/",
+      url: "http://localhost:4200/assets/audios/",
       allowedMimeType: this.allowedMimeType,
       headers: [{name:'Accept', value:'application/json'}],
       autoUpload: false,
@@ -69,7 +68,6 @@ export class HomeConcursoComponent implements OnInit {
     });
 
   }
-
 
   reproducirAudio( urlArchivo ): void {
 
@@ -125,9 +123,7 @@ export class HomeConcursoComponent implements OnInit {
     this.valorUrl = this.form.value.urlConcurso
   }
 
-
   //Validación de subida de archivo
-
   onWhenAddingFileFailed(item: FileLikeObject, filter: any, options: any) {
     switch (filter.name) {
       case 'fileSize':
@@ -148,6 +144,7 @@ export class HomeConcursoComponent implements OnInit {
     }
   }
 }
+
 declare var jwplayer : any;
 
 @Component({
@@ -162,15 +159,9 @@ export class DialogClass implements OnInit,AfterViewInit {
     this.dialogRef.close();
   }
 
-  ngOnInit(){
-
-
-
-  }
+  ngOnInit(){}
 
   ngAfterViewInit(){
-
-
    jwplayer("mediaplayer").setup({
       file: "/assets/audio/voz.mp3",
       height: 180,

@@ -35,12 +35,12 @@
           </mat-grid-tile>
           <mat-grid-tile>
             <mat-selection-list class="full-width-input">
-              <mat-select placeholder="Rol"  formControlName="rolSelect" required>
+              <mat-select placeholder="Rol"  formControlName="rol" required>
                 <mat-option *ngFor="let rol of roles" [value]="rol.value" >
                   {{rol.nombre}}
                 </mat-option>
               </mat-select>
-              <mat-error *ngIf="validarCampos('rolSelect')">Seleccione un rol</mat-error>
+              <mat-error *ngIf="validarCampos('rol')">Seleccione un rol</mat-error>
             </mat-selection-list>
           </mat-grid-tile>
           <mat-grid-tile>
