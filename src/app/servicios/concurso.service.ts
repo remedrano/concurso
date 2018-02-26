@@ -12,10 +12,8 @@ export class ConcursoService {
   constructor( private http: HttpClient ) { }
 
   crearConcurso(concurso: Concurso) : Observable<Concurso>{
-
-    return this.http.post<Concurso>('assets/baseDatos/usuarios.json', {
-      params: concurso
-    });
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
+    return this.http.post<any>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
   }
 
   catalogoConcurso() : Observable<Concurso[]>{

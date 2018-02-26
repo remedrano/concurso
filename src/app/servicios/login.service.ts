@@ -28,7 +28,7 @@ export class LoginService {
   crearCuenta( usuario : Usuario ) : Observable<any>{
 
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.post(this.urlServer+'/api/user', JSON.stringify(usuario), { headers: headers}  );
+    return this.http.post<any>(this.urlServer+'/api/user', JSON.stringify(usuario), { headers: headers}  );
   }
 
   logout() {

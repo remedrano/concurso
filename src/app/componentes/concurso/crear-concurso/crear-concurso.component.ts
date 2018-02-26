@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService  } from '../../../servicios/login.service';
 import { Router} from '@angular/router';
-import {SesionService} from "../../../servicios/sesion.service";
+import { SesionService } from "../../../servicios/sesion.service";
+import { ConcursoService } from "../../../servicios/concurso.service";
 
 @Component({
   selector: 'app-crear-concurso',
@@ -10,7 +11,8 @@ import {SesionService} from "../../../servicios/sesion.service";
   styleUrls: ['./crear-concurso.component.css'],
   providers: [
     LoginService,
-    SesionService
+    SesionService,
+    ConcursoService
   ]
 })
 export class CrearConcursoComponent implements OnInit {
@@ -24,14 +26,16 @@ export class CrearConcursoComponent implements OnInit {
     private fb: FormBuilder,
     private loginService: LoginService,
     private sesionService : SesionService,
-    private router: Router
+    private router: Router,
+    private concurso: ConcursoService,
+
+
   ) { }
 
   ngOnInit() {
 
     this.form = this.fb.group({
       nombreConcurso: ['', Validators.required],
-      imagenConcurso: ['', Validators.required],
       urlConcurso: ['', Validators.required],
       fechaInicioConcurso: ['', Validators.required],
       fechaFinConcurso: ['', Validators.required],
@@ -53,9 +57,8 @@ export class CrearConcursoComponent implements OnInit {
   }
 
   enviarFormulario() {
-
     if (this.form.valid) {
-      this.loginService.login(this.form.value).subscribe( data => {
+      this.concurso.crearConcurso(this.form.value).subscribe( data => {
 
         if( data["code"] == 0 && data != null ) //Usuario consultado
           alert("Concurso almacenado!");
