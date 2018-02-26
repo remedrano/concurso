@@ -64,6 +64,7 @@ export class CrearConcursoComponent implements OnInit {
     if (this.form.valid && this.archivo != null ) {
       let param = this.route.params.subscribe( params => this.params = (params) );
       this.concurso.cargarConcurso( null , param["nombre"]).subscribe( data => {
+
         this.concurso.crearConcurso(this.form.value , this.archivo).subscribe( data => {
           if( data["code"] == 0 && data != null ) //Usuario consultado
             alert("Concurso almacenado!");
@@ -77,9 +78,6 @@ export class CrearConcursoComponent implements OnInit {
       }, err => {
         console.log(err);
       });
-
-
-
 
     }
     if( this.archivo == null ){
