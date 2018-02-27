@@ -67,8 +67,10 @@ export class CrearConcursoComponent implements OnInit {
       let usuario = this.sesionService.getDataSesion();
 
       this.concurso.crearConcurso(this.form.value , usuario.id ,this.archivo).subscribe( data => {
-        if( data["code"] == 0 && data != null ) //Usuario consultado
+        if( data["code"] == 0 && data != null ) {//Usuario consultado
           alert("Concurso almacenado!");
+          this.router.navigate(['catalogoConcurso'])
+        }
         else{
           alert("Error almacenando concurso")
         }

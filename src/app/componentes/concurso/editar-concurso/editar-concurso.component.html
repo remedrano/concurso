@@ -57,12 +57,14 @@
 
         </mat-grid-list>
         <br>
-        <image-upload
-          url="https://httpbin.org/status/200"
-          buttonCaption="Banner o imagen"
-          dropBoxMessage="Arrastra imagen"
-          clearButtonCaption="Eliminar"
-        ></image-upload>
+        <div>
+          <input type="file" #imagenConcurso (focus)="onFileChange(imagenConcurso)" required>
+        </div>
+        <br>
+          <div>
+            <canvas height="80" width="300" id="photoPreview"></canvas>
+          </div>
+        <br>
         <br>
         <mat-divider></mat-divider>
         <br>

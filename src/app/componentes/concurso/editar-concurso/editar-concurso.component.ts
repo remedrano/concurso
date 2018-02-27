@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService  } from '../../../servicios/login.service';
-import { Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SesionService} from "../../../servicios/sesion.service";
 import {ConcursoService} from '../../../servicios/concurso.service';
 import { Concurso } from "../../../modelos/concurso";
@@ -23,17 +23,22 @@ export class EditarConcursoComponent implements OnInit {
   private envioFormulario: boolean;
   private isLoggedIn : boolean;
   public valorUrl : string;
+  public params : any;
   public concurso : Concurso;
+  public archivo : any;
+
 
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
     private sesionService : SesionService,
     private concursoService : ConcursoService,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
+    this.route.params.subscribe( params => this.params = (params) );
 
     this.form = this.fb.group({
       nombreConcurso: ['', Validators.required],
@@ -46,11 +51,7 @@ export class EditarConcursoComponent implements OnInit {
       recomendacion: ['', Validators.required]
     });
 
-    this.sesionService.sesionActivada().subscribe( value => {
-      if( value ) this.router.navigate(['inicio'])
-    })
-
-    this.concursoService.editarConcurso().subscribe( data => {
+    this.concursoService.obtenerConcurso(this.params["id"]).subscribe( data => {
       this.concurso = data;
       this.form = this.fb.group({
         nombreConcurso: [this.concurso.nombreConcurso, Validators.required],
@@ -76,21 +77,51 @@ export class EditarConcursoComponent implements OnInit {
 
   enviarFormulario() {
 
-    if (this.form.valid) {
-      this.loginService.login(this.form.value).subscribe( data => {
+    if (this.form.valid && this.archivo != null ) {
+      this.route.params.subscribe( params => this.params = (params) );
+      let usuario = this.sesionService.getDataSesion();
+      console.log("antes de enviar" + this.form.value)
 
-        if( data["code"] == 0 && data != null ) //Usuario consultado
-          alert("Concurso almacenado!");
+      this.concursoService.editarConcurso(this.form.value , usuario.id ,this.archivo, this.params["id"]).subscribe( data => {
+        if( data["code"] == 0 && data != null ) {
+          alert("Concurso modificado!");
+          this.router.navigate(['catalogoConcurso'])
+        }//Usuario consultado
         else{
           alert("Error almacenando concurso")
         }
-
       }, err => {
         console.log(err);
       });
 
+
+    }
+    if( this.archivo == null ){
+      alert("Selecciona una imagen");
     }
     this.envioFormulario = true;
+  }
+
+  onFileChange(input:any){
+    //var extn = filename.split(".").pop();
+    if (input.files && input.files[0]) {
+      //this.archivo = input.files[0];
+      let reader = new FileReader();
+      reader.onload = function (e: any) {
+        let archivoLocal = new Image();
+        archivoLocal.src = e.target.result;
+        archivoLocal.onload = function () {
+          let canvas: any = document.getElementById("photoPreview"),
+            context = canvas.getContext("2d");
+          context.drawImage(archivoLocal,0,0,200,200);
+        }.bind(this);
+
+        this.archivo = e.target.result;
+
+      }.bind(this);
+
+      reader.readAsDataURL(input.files[0]);
+    }
   }
 
   onClicUrl( ){
