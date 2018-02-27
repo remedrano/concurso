@@ -57,7 +57,7 @@ import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/ed
     RouterModule.forRoot([
         {
           path: '',
-          component: InicioComponent
+          component: LoginComponent
         },
         {
           path: 'login',
@@ -65,7 +65,11 @@ import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/ed
         },
         {
           path: 'concurso/:nombre',
-          component: HomeConcursoComponent
+          component: HomeConcursoComponent,
+        },
+        {
+          path: 'concurso',
+          component: HomeConcursoComponent,
         },
         {
           path: 'inicio',
@@ -80,15 +84,15 @@ import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/ed
           component: CatalogoConcursoComponent
         },
         {
-          path: 'catalogoConcurso/detalleConcurso/:id/:tipo',
+          path: 'detalleConcurso/:nombre/:tipo',
           component: HomeConcursoComponent
         },
         {
-          path: 'login/cuenta',
+          path: 'cuenta',
           component: CuentaComponent
         },
         {
-          path: 'catalogoConcurso/editarConcurso/:id',
+          path: 'editarConcurso/:id',
           component:EditarConcursoComponent
         }
       ]

@@ -4,6 +4,7 @@ export interface Concurso {
   urlConcurso: string,
   fechaInicioConcurso: string,
   fechaFinConcurso: string,
+  fechaCreacion: string,
   valorPagar: string,
   guion: string,
   recomendacion : string

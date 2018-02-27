@@ -16,19 +16,27 @@ import { Router } from "@angular/router";
 export class CatalogoConcursoComponent implements OnInit {
 
   public concursos : Concurso[];
+  public urlConcurso: string;
 
   constructor( private concursoService : ConcursoService,
                private sesionService : SesionService,
                private router : Router) { }
 
   ngOnInit() {
+    this.sesionService
     let usuario = this.sesionService.getDataSesion();
-    this.concursoService.catalogoConcurso( usuario.id ).subscribe( data => {
+    this.concursoService.catalogoConcurso( 1).subscribe( data => {
       this.concursos = data;
+      jQuery(document).ready(function () {
+        jQuery("#tabla-catalogo").DataTable({
+          language: {url : "assets/datatable/spanish.json"} ,
+          order: [[ 5, "desc" ]],
+          lengthMenu: [[50], [50, "All"]]
+        });
+      })
     }, err => {
       console.log(err);
     });
-
   }
 
   eliminar( concurso : Concurso ){
@@ -48,7 +56,12 @@ export class CatalogoConcursoComponent implements OnInit {
       });
 
     }
+  }
 
+  redireccionarConcurso( url ){
+    this.urlConcurso = url;
+    let urlCompleta = "/detalleConcurso/"+url+"/admin";
+    this.router.navigate([urlCompleta])
   }
 
 }

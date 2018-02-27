@@ -1,9 +1,11 @@
+<app-header urlConcurso="{{urlConcurso}}" ></app-header>
+
 <div class="container">
 
   <div class="divider divider"></div>
   <h5 class="center">Listado de concursos</h5>
 
-  <table id="tabla-catalogo" *ngIf="concursos" datatable="ng" class="table row-border hover" >
+  <table id="tabla-catalogo" *ngIf="concursos" class="table row-border hover" >
     <thead>
     <tr>
       <th>Nombre</th>
@@ -11,6 +13,7 @@
       <th>Inicio</th>
       <th>Finalización</th>
       <th>Premio</th>
+      <th>Creado</th>
       <th>Detalles</th>
       <th>Editar</th>
       <th>Eliminar</th>
@@ -23,11 +26,12 @@
       <td>{{concurso.fechaInicioConcurso}}</td>
       <td>{{concurso.fechaFinConcurso}}</td>
       <td>{{concurso.valorPagar}}</td>
+      <td>{{concurso.fechaCreacion}}</td>
       <td class="center-align">
-        <mat-icon style="cursor: pointer" routerLink="detalleConcurso/{{concurso.urlConcurso}}/int" > search</mat-icon>
+        <mat-icon style="cursor: pointer" (click)="redireccionarConcurso(concurso.urlConcurso)"  > search</mat-icon>
       </td>
       <td class="center-align">
-        <mat-icon style="cursor: pointer" routerLink="editarConcurso/{{concurso.id}}" >edit</mat-icon>
+        <mat-icon style="cursor: pointer" routerLink="/editarConcurso/{{concurso.id}}" >edit</mat-icon>
       </td>
       <td class="center-align">
         <mat-icon style="cursor: pointer" (click)="eliminar(concurso)">delete</mat-icon>

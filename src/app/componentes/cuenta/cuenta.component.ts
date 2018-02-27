@@ -56,10 +56,6 @@ export class CuentaComponent implements OnInit {
       rol: ['', Validators.required],
       confirmpass: ['', [Validators.required, passwordConfirming]],
     } );
-
-    this.sesionService.sesionActivada().subscribe( value => {
-      if( value ) this.router.navigate(['inicio'])
-    })
   }
 
   validarCampos(campo: string) {

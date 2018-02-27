@@ -21,8 +21,9 @@ export class LoginService {
     params.set( 'password', usuario.password );
     params.set( 'rol', usuario.rol );
 
-    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.post<Usuario>(this.urlServer+'/api/user/login', JSON.stringify(params),{ headers:headers } );
+    /*const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
+    return this.http.post<Usuario>(this.urlServer+'/api/user/login', JSON.stringify(params),{ headers:headers } );*/
+    return this.http.get<Usuario>('assets/baseDatos/usuarios.json');
 
   }
 

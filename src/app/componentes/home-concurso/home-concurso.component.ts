@@ -1,6 +1,6 @@
 import {Component, OnInit, ChangeDetectorRef, AfterViewInit, Inject} from '@angular/core';
 import { ConcursoService } from "../../servicios/concurso.service";
-import {  SesionService } from "../../servicios/sesion.service";
+import { SesionService } from "../../servicios/sesion.service";
 
 import {Router,ActivatedRoute} from "@angular/router";
 import { Voz } from "../../modelos/voz";
@@ -22,21 +22,18 @@ import { Concurso } from '../../modelos/concurso';
 
 export class HomeConcursoComponent implements OnInit {
 
-  public voces : Voz[];
-  public params : any;
-  public concurso : Concurso;
-
-  errorMessageFile: string;
-  allowedMimeType = ['audio/wav','audio/mp3','audio/ogg'];
-  maxFileSize = 10 * 1024 * 1024;
-
   form: FormGroup;
   private envioFormulario: boolean;
-  private isLoggedIn : boolean;
   public valorUrl : string;
+  public urlConcurso : string;
   public archivo : any;
   public nameFile : string;
   public extensionesPermitidas = [".mp3", ".wav", ".ogg", ".wma", ".midi" ,".cd"];
+  public voces : Voz[];
+  public params : any;
+  public concurso : Concurso;
+  public admin : string;
+  public nombreUrlByParam : string;
 
   constructor(
      private fb: FormBuilder,
@@ -45,10 +42,11 @@ export class HomeConcursoComponent implements OnInit {
      private route: ActivatedRoute,
      private cd: ChangeDetectorRef ,
      public dialog: MatDialog,
-     public sesionService : SesionService
+     private  sesionService : SesionService
   ) { }
 
   ngOnInit( ) {
+
     this.form = this.fb.group({
       firstName: ['', Validators.required],
       secondName: ['', Validators.required],
@@ -59,16 +57,49 @@ export class HomeConcursoComponent implements OnInit {
     });
 
     this.route.params.subscribe( params => this.params = (params) );
-    this.concursoService.cargarConcurso( null , this.params["nombre"]).subscribe( data => {
+
+    this.nombreUrlByParam = this.params["nombre"];
+
+    if( this.nombreUrlByParam == null ){ //Validar la navegabilidad
+      let urlConcursoLocal = this.sesionService.getUrlConcurso();
+      if( urlConcursoLocal == null) {
+        alert("Url de concurso invalida");
+        this.router.navigate(["/inicio"]);
+        return false;
+      }
+      else{
+        this.nombreUrlByParam = urlConcursoLocal;
+      }
+    }
+
+    this.admin = this.params["tipo"];
+    this.urlConcurso = this.nombreUrlByParam;
+
+    this.concursoService.cargarConcurso( null , this.nombreUrlByParam).subscribe( data => {
 
       this.concurso = data;
       if( this.concurso != null ) {
 
-        this.concursoService.catalogoVoces(data.id).subscribe(data => {
+        //Si ingresa la primera vez sin sesion se registra la url
+        this.sesionService.setUrlConcurso( this.nombreUrlByParam );
+
+        this.concursoService.catalogoVoces(this.concurso.id).subscribe(data => {
           this.voces = data;
+          jQuery(document).ready(function () {
+            jQuery("#catalogoVoces").DataTable({
+              language: {url : "assets/datatable/spanish.json"} ,
+              lengthMenu: [[20], [20, "All"]]
+            });
+          });
+
         }, err => {
           console.log(err);
         });
+
+      }else{
+
+        alert("La url con nombre : "+ this.nombreUrlByParam + " no se encuentra registrada!")
+        this.router.navigate(["/inicio"]);
       }
 
     }, err => {
@@ -76,6 +107,7 @@ export class HomeConcursoComponent implements OnInit {
     });
 
   }
+
 
   reproducirAudio( urlArchivo ): void {
 
@@ -117,6 +149,7 @@ export class HomeConcursoComponent implements OnInit {
           this.concursoService.subirVoz(this.form.value , this.archivo , data.id, this.nameFile ).subscribe( data => {
             if( data["code"] == 0 && data != null ){ //Registro almacenado
               alert("Registro almacenada!");
+              this.router.navigate(["concurso/"])
             }
             else{
               alert("Error almacenando datos")

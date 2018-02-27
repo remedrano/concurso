@@ -47,10 +47,6 @@ export class CrearConcursoComponent implements OnInit {
       guion: ['', Validators.required],
       recomendacion: ['', Validators.required]
     });
-
-    /*this.sesionService.sesionActivada().subscribe( value => {
-      if( value ) this.router.navigate(['inicio'])
-    })*/
   }
 
   validarCampos(campo: string) {
@@ -69,10 +65,16 @@ export class CrearConcursoComponent implements OnInit {
       this.concurso.crearConcurso(this.form.value , usuario.id ,this.archivo).subscribe( data => {
         if( data["code"] == 0 && data != null ) { //Usuario consultado
           alert("Concurso almacenado!");
-          this.router.navigate(['catalogoConcurso']);
+          this.router.navigate(['/catalogoConcurso']);
         }
         else{
-          alert("Error almacenando concurso")
+          if( data["code"] == 1 && data != null ) {
+            alert("El concurso se encuentra registrado!, intenta colocar otra url")
+          }
+          else{
+            alert("Error almacenando datos!");
+          }
+
         }
       }, err => {
         console.log(err);

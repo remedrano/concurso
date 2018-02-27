@@ -12,17 +12,18 @@ export class ConcursoService {
 
   constructor( private http: HttpClient ) { }
 
-  crearConcurso(concurso: Concurso, idUsuario:number, archivo : any ) : Observable<Concurso>{
+  crearConcurso(concurso: Concurso, idUsuario:number, archivo : any ) : Observable<any>{
+    alert("Ingreso aca");
     concurso.imagenConcurso = archivo;
     concurso.idUsuarioCreador
     const headers = new HttpHeaders ( { 'Content-Type': 'multipart/form-data' } );
     return this.http.post<Concurso>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
+    //return this.http.get('assets/baseDatos/crearConcurso.json'  );
   }
 
   catalogoConcurso(idUsuario : number ) : Observable<Concurso[]>{
-
-    //http://localhost:8090/api/concurso/usuario/{idUsuarioCreador}
     return this.http.get<Concurso[]>(this.urlServer+'/api/concurso/usuario/'+idUsuario);
+    //return this.http.get<Concurso[]>('assets/baseDatos/datos.json');
   }
 
   eliminarConcurso( concurso: Concurso ): Observable<any>{
@@ -32,6 +33,7 @@ export class ConcursoService {
 
   catalogoVoces( idConcurso ) : Observable<Voz[]>{
     return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
+    //return this.http.get<Voz[]>('assets/baseDatos/audios.json');
   }
 
   subirVoz( datos : any , archivo: any, idConcurso :number, nameFile : string) : Observable<Voz>{
@@ -67,6 +69,7 @@ export class ConcursoService {
     }else{
       if( urlConcurso != null && urlConcurso != undefined && urlConcurso != "undefined"){
         return this.http.get<Concurso>(this.urlServer+'/api/url/'+urlConcurso);
+        //return this.http.get<Concurso>('assets/baseDatos/concurso.json');
       }
     }
   }

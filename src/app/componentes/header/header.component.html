@@ -3,13 +3,14 @@
     <!--<img src="../../../assets/images/logo-nav.gif" class="logo-nav">-->
   </span>
   <span class="docs-navbar-header"></span>
-  <button mat-button routerLink="inicio">Inicio</button>
-  <button mat-button routerLink="concurso/reggaeton">Catálogo de audios</button>
-  <button mat-button [matMenuTriggerFor]="concursoMenu" >Concursos</button>
-  <button mat-button routerLink="login" *ngIf="!isLoggedIn">Ingresar</button>
+  <button mat-button routerLink="/inicio" *ngIf="isLoggedIn">Inicio</button>
+  <button mat-button routerLink="/concurso/{{urlConcurso}}" *ngIf="!isLoggedIn">Inicio Concurso</button>
+  <button mat-button [matMenuTriggerFor]="concursoMenu" *ngIf="isLoggedIn" >Concursos</button>
+  <button mat-button routerLink="/login" *ngIf="!isLoggedIn">Ingresar</button>
   <button mat-button (click)="onLogout()" *ngIf="isLoggedIn">Salir </button>
 </mat-toolbar>
 <mat-menu #concursoMenu="matMenu">
-  <button mat-menu-item routerLink="crearConcurso">Crear</button>
-  <button mat-menu-item routerLink="catalogoConcurso">Catálogo</button>
+  <button mat-menu-item routerLink="/crearConcurso">Crear</button>
+  <button mat-menu-item routerLink="/catalogoConcurso">Catálogo</button>
 </mat-menu>
+<router-outlet></router-outlet>

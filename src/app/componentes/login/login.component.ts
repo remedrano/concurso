@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService  } from '../../servicios/login.service';
-import { Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SesionService} from "../../servicios/sesion.service";
 
 @Component({
@@ -33,10 +33,6 @@ export class LoginComponent implements OnInit {
       email: ['', Validators.required],
       password: ['', Validators.required]
     });
-
-    this.sesionService.sesionActivada().subscribe( value => {
-      if( value ) this.router.navigate(['inicio'])
-    })
   }
 
   validarCampos(campo: string) {
@@ -56,7 +52,7 @@ export class LoginComponent implements OnInit {
         else{
           let usuario = data;
           this.sesionService.iniciarSesion( usuario );
-          window.location.reload()
+          this.router.navigate(['/inicio'])
         }
 
       }, err => {
@@ -66,5 +62,4 @@ export class LoginComponent implements OnInit {
     }
     this.envioFormulario = true;
   }
-
 }

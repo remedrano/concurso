@@ -1,14 +1,43 @@
+<app-header urlConcurso="{{urlConcurso}}" ></app-header>
+
 <div class="container">
 
   <br><br>
+  <mat-accordion>
+    <mat-expansion-panel (opened)="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Información del concurso :
+        </mat-panel-title>
+        <mat-panel-description>
+          {{concurso.nombreConcurso}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-grid-list cols="4" rowHeight="20px">
+        <mat-grid-tile class="left-align left "><b>Url :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.urlConcurso}} </mat-grid-tile>
+        <mat-grid-tile><b>Valor a pagar ($) :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.valorPagar}} </mat-grid-tile>
+        <mat-grid-tile><b>Fecha inicio :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.fechaInicioConcurso}} </mat-grid-tile>
+        <mat-grid-tile><b>Fecha Fin :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.fechaFinConcurso}} </mat-grid-tile>
+        <mat-grid-tile><b>Guión :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.guion}} </mat-grid-tile>
+        <mat-grid-tile><b>Recomendación :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.recomendacion}} </mat-grid-tile>
 
+      </mat-grid-list>
+
+    </mat-expansion-panel>
+  </mat-accordion>
 
   <div class="divider divider"></div>
   <br><br>
 
   <h5 class="center">Listado de audios</h5>
 
-  <table datatable="ng" class="table row-border hover" >
+  <table id="catalogoVoces" class="table row-border hover" >
     <thead>
     <tr>
       <th>Email</th>
@@ -39,8 +68,8 @@
 
   <div class="divider"></div>
   <br><br><br>
-  <h5 class="center">Agregar audio</h5>
-  <mat-card>
+  <h5 class="center" *ngIf="admin==null || admin==''">Agregar audio</h5>
+  <mat-card *ngIf="admin==null || admin==''">
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="enviarFormulario()">
         <mat-grid-list cols="2" rowHeight="70px">
@@ -81,7 +110,7 @@
           </mat-grid-tile>
 
           <mat-grid-tile >
-              <input type="file" #inputFile (change)="onFileChangeHome(inputFile)" (ngModel)="campoArchivo" required>
+              <input type="file" #inputFile (change)="onFileChangeHome(inputFile)" required>
           </mat-grid-tile>
 
           <mat-grid-tile [colspan]="2">

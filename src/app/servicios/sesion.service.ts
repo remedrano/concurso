@@ -37,6 +37,14 @@ export class SesionService {
     return usuarioLocal;
   }
 
+  setUrlConcurso( urlConcurso ){
+    this.localStorageService.add('urlconcurso', urlConcurso);
+  }
+
+  getUrlConcurso() {
+    return <string>this.localStorageService.get("urlconcurso");
+  }
+
   iniciarSesion(usuario : Usuario){
 
     let usuarioLocal = this.localStorageService.get("usuario");

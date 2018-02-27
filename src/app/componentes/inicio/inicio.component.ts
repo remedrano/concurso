@@ -13,12 +13,10 @@ import { Router} from '@angular/router';
 })
 export class InicioComponent implements OnInit {
 
-  public isLoggedIn : boolean;
-
   constructor(private sesionService: SesionService) { }
 
   ngOnInit() {
-    this.sesionService.sesionActivada().subscribe( value => { this.isLoggedIn = value} )
+
   }
 
 }
