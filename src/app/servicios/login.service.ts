@@ -4,6 +4,7 @@ import {HttpClient, HttpParams, HttpHeaders , HttpHeaderResponse} from '@angular
 import {Observable} from "rxjs/Observable";
 import { Usuario } from '../modelos/usuario';
 import {SesionService} from "../servicios/sesion.service";
+import {Voz} from "../modelos/voz";
 
 @Injectable()
 export class LoginService {
@@ -20,9 +21,9 @@ export class LoginService {
     params.set( 'password', usuario.password );
     params.set( 'rol', usuario.rol );
 
-    return this.http.get<Usuario>('assets/baseDatos/usuarios.json', {
-      params: params
-    });
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
+    return this.http.post<Usuario>(this.urlServer+'/api/user/login', JSON.stringify(params),{ headers:headers } );
+
   }
 
   crearCuenta( usuario : Usuario ) : Observable<any>{

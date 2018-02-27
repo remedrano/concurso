@@ -26,7 +26,6 @@ export class HomeConcursoComponent implements OnInit {
   public params : any;
   public concurso : Concurso;
 
-
   errorMessageFile: string;
   allowedMimeType = ['audio/wav','audio/mp3','audio/ogg'];
   maxFileSize = 10 * 1024 * 1024;
@@ -37,6 +36,7 @@ export class HomeConcursoComponent implements OnInit {
   public valorUrl : string;
   public archivo : any;
   public nameFile : string;
+  public extensionesPermitidas = [".mp3", ".wav", ".ogg", ".wma", ".midi" ,".cd"];
 
   constructor(
      private fb: FormBuilder,
@@ -131,9 +131,9 @@ export class HomeConcursoComponent implements OnInit {
         });
 
     }
-    console.log( this.archivo )
+
     if( this.archivo == null ){
-      alert("Debes enviar un archivo de audio");
+      alert("Debes seleccionar un archivo de audio");
     }
     this.envioFormulario = true;
   }
@@ -143,13 +143,21 @@ export class HomeConcursoComponent implements OnInit {
   }
 
   onFileChangeHome(input:any) {
-    //alert("Ingreso aca");
-    //var extn = input.files[0].split(".").pop();
-
-    console.log( input );
+    this.archivo = null;
     if (input.files && input.files[0]) {
       //this.archivo = input.files[0];
       this.nameFile = input.files[0].name
+      //Validar extensiones de audio
+      let encontro = false
+      for( var index in this.extensionesPermitidas){
+        if( this.nameFile.toLowerCase().indexOf( this.extensionesPermitidas[index] ) != -1){
+          encontro = true;
+        }
+      }
+      if( encontro == false){
+        alert("Archivo con extensión no permitida --> "+this.extensionesPermitidas.toString());
+        return false;
+      }
 
       let reader = new FileReader();
       reader.onload = function (e: any) {
