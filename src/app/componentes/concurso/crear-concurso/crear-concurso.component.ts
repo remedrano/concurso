@@ -24,6 +24,7 @@ export class CrearConcursoComponent implements OnInit {
   public valorUrl : string;
   public archivo : any;
   public params : any;
+  public extensionesPermitidas = [".jpg", ".png", ".jpeg", ".gif"];
 
   constructor(
     private fb: FormBuilder,
@@ -66,8 +67,10 @@ export class CrearConcursoComponent implements OnInit {
       let usuario = this.sesionService.getDataSesion();
 
       this.concurso.crearConcurso(this.form.value , usuario.id ,this.archivo).subscribe( data => {
-        if( data["code"] == 0 && data != null ) //Usuario consultado
+        if( data["code"] == 0 && data != null ) { //Usuario consultado
           alert("Concurso almacenado!");
+          this.router.navigate(['catalogoConcurso']);
+        }
         else{
           alert("Error almacenando concurso")
         }
@@ -88,9 +91,26 @@ export class CrearConcursoComponent implements OnInit {
   }
 
   onFileChange(input:any){
+    this.archivo = null;
     //var extn = filename.split(".").pop();
     if (input.files && input.files[0]) {
       //this.archivo = input.files[0];
+
+      let nameFile = input.files[0].name;
+      //Validar extensiones de audio
+      let encontro = false
+      for( var index in this.extensionesPermitidas){
+        if( nameFile.toLowerCase().indexOf( this.extensionesPermitidas[index] ) != -1){
+          encontro = true;
+        }
+      }
+      if( encontro == false){
+        alert("Archivo con extensión no permitida --> "+this.extensionesPermitidas.toString());
+        return false;
+      }
+
+
+
       let reader = new FileReader();
       reader.onload = function (e: any) {
         let archivoLocal = new Image();
