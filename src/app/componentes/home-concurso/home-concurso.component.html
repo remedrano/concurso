@@ -1,7 +1,6 @@
 <div class="container">
 
   <br><br>
-
   <mat-accordion>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -30,6 +29,7 @@
 
     </mat-expansion-panel>
   </mat-accordion>
+
   <div class="divider divider"></div>
   <br><br>
 
@@ -108,7 +108,7 @@
           </mat-grid-tile>
 
           <mat-grid-tile >
-              <input type="file" #inputFile (change)="onFileChange(inputFile)" required>
+              <input type="file" #inputFile (change)="onFileChangeHome(inputFile)" required>
           </mat-grid-tile>
 
           <mat-grid-tile [colspan]="2">

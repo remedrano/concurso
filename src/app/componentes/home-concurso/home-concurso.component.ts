@@ -26,6 +26,7 @@ export class HomeConcursoComponent implements OnInit {
   public params : any;
   public concurso : Concurso;
 
+
   errorMessageFile: string;
   allowedMimeType = ['audio/wav','audio/mp3','audio/ogg'];
   maxFileSize = 10 * 1024 * 1024;
@@ -35,6 +36,7 @@ export class HomeConcursoComponent implements OnInit {
   private isLoggedIn : boolean;
   public valorUrl : string;
   public archivo : any;
+  public nameFile : string;
 
   constructor(
      private fb: FormBuilder,
@@ -112,7 +114,7 @@ export class HomeConcursoComponent implements OnInit {
       this.concursoService.cargarConcurso( null , this.params["nombre"]).subscribe( data => {
 
         if( data != null){//Busco el id del concurso por el nombre
-          this.concursoService.subirVoz(this.form.value , this.archivo , data.id).subscribe( data => {
+          this.concursoService.subirVoz(this.form.value , this.archivo , data.id, this.nameFile ).subscribe( data => {
             if( data["code"] == 0 && data != null ){ //Registro almacenado
               alert("Registro almacenada!");
             }
@@ -140,10 +142,15 @@ export class HomeConcursoComponent implements OnInit {
     this.valorUrl = this.form.value.urlConcurso
   }
 
-  onFileChange(input:any) {
-    //var extn = filename.split(".").pop();
+  onFileChangeHome(input:any) {
+    //alert("Ingreso aca");
+    //var extn = input.files[0].split(".").pop();
+
+    console.log( input );
     if (input.files && input.files[0]) {
       //this.archivo = input.files[0];
+      this.nameFile = input.files[0].name
+
       let reader = new FileReader();
       reader.onload = function (e: any) {
         this.archivo = e.target.result;

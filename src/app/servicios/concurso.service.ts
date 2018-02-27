@@ -24,19 +24,19 @@ export class ConcursoService {
   }
 
   eliminarConcurso( concurso: Concurso ): Observable<any>{
-    const params = new HttpParams( ).set('idConcurso', String(concurso.id));
-    return this.http.get('assets/baseDatos/eliminar.json',{params });
+    const params = new HttpParams( ).set('idConcurso', concurso.id.toString());
+    return this.http.delete(this.urlServer+ '/api/concurso/' ,{ params: params});
   }
 
   catalogoVoces( idConcurso ) : Observable<Voz[]>{
     return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
   }
 
-  subirVoz( datos : any , archivo: any, idConcurso :number) : Observable<Voz>{
+  subirVoz( datos : any , archivo: any, idConcurso :number, nameFile : string) : Observable<Voz>{
 
     let param = new HttpParams();
     param.append("base64file",archivo );
-    param.append("nameFile",archivo.dirname );
+    param.append("nameFile",nameFile);
     param.append("firstName",datos.firstName);
     param.append("secondName",datos.secondName);
     param.append("firstLastName",datos.firstLastName);
@@ -49,6 +49,7 @@ export class ConcursoService {
     return this.http.post<Voz>(this.urlServer+'/api/voice', JSON.stringify(param),{ headers:headers } );
   }
 
+  //No se usa
   cargarArchivoVoz( archivo : any) : Observable<Voz>{
     return this.http.post<Voz>('assets/baseDatos/usuarios.json', {
       params: archivo
@@ -57,17 +58,14 @@ export class ConcursoService {
 
   cargarConcurso( idConcurso : number, urlConcurso : string ) : Observable<Concurso>{
 
-    let params = new HttpParams(); let filtro :string;
-    console.log( idConcurso );
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
+
     if( idConcurso != null  && idConcurso != undefined && idConcurso.toString() != "undefined" ){
-      filtro=idConcurso.toString()
+      return this.http.get<Concurso>(this.urlServer+'/api/concurso/'+idConcurso);
     }else{
       if( urlConcurso != null && urlConcurso != undefined && urlConcurso != "undefined"){
-        filtro= urlConcurso;
+        return this.http.get<Concurso>(this.urlServer+'/api/url/'+urlConcurso);
       }
     }
-
-    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.get<Concurso>(this.urlServer+'/api/concurso/'+filtro);
   }
 }
