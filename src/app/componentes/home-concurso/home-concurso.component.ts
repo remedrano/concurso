@@ -2,10 +2,12 @@ import {Component, OnInit, ChangeDetectorRef, AfterViewInit, Inject} from '@angu
 import { ConcursoService } from "../../servicios/concurso.service";
 import {  SesionService } from "../../servicios/sesion.service";
 
+
 import {Router,ActivatedRoute} from "@angular/router";
 import { Voz } from "../../modelos/voz";
 import { Usuario } from "../../modelos/usuario";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FileUploader , FileLikeObject} from 'ng2-file-upload';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import { Concurso } from '../../modelos/concurso';
@@ -35,6 +37,7 @@ export class HomeConcursoComponent implements OnInit {
   private isLoggedIn : boolean;
   public valorUrl : string;
   public archivo : File;
+  public nameFile : string;
 
   constructor(
      private fb: FormBuilder,
@@ -123,52 +126,40 @@ export class HomeConcursoComponent implements OnInit {
 
   enviarFormulario() {
 
-    if (this.form.valid && this.archivo != null ) {
-      let usuario = this.sesionService.getDataSesion();
+      if (this.form.valid && this.archivo != null ) {
+        let usuario = this.sesionService.getDataSesion();
 
-      let param = this.route.params.subscribe( params => this.params = (params) );
+        let param = this.route.params.subscribe( params => this.params = (params) );
 
-      this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
+        this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
 
-        if( data != null){//Busco el id del concurso por el nombre
-          this.concursoService.subirVoz(this.form.value, usuario , this.archivo , data.id).subscribe( data => {
-            if( data["code"] == 0 && data != null ){ //Registro almacenado
-              alert("Registro almacenada!");
-            }
-            else{
-              alert("Error almacenando datos")
-            }
+          if( data != null){//Busco el id del concurso por el nombre
+            this.concursoService.subirVoz(this.form.value, usuario , this.archivo , data.id, this.nameFile ).subscribe( data => {
+              if( data["code"] == 0 && data != null ){ //Registro almacenado
+                alert("Registro almacenada!");
+              }
+              else{
+                alert("Error almacenando datos")
+              }
 
-          }, err => {
-            console.log(err);
-          });
-        }
-      }, err => {
-        console.log(err);
-      });
+            }, err => {
+              console.log(err);
+            });
+          }
+        }, err => {
+          console.log(err);
+        });
 
+      }
+      if( this.archivo == null ){
+        alert("Debes enviar un archivo de audio");
+      }
+      this.envioFormulario = true;
     }
-    if( this.archivo == null ){
-      alert("Debes enviar un archivo de audio");
-    }
-    this.envioFormulario = true;
-  }
+
 
   onClicUrl( ){
     this.valorUrl = this.form.value.urlConcurso
-  }
-
-  onFileChange(input:any) {
-    //var extn = filename.split(".").pop();
-    if (input.files && input.files[0]) {
-      //this.archivo = input.files[0];
-      let reader = new FileReader();
-      reader.onload = function (e: any) {
-        this.archivo = e.target.result;
-      }.bind(this);
-
-      reader.readAsDataURL(input.files[0]);
-    }
   }
 }
 
@@ -197,7 +188,5 @@ export class DialogClass implements OnInit,AfterViewInit {
       controls: true
     }) ;
   }
-
-
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConcursoService } from '../../../servicios/concurso.service'
+import {  SesionService } from '../../../servicios/sesion.service'
 import { Concurso } from "../../../modelos/concurso";
 import { Router } from "@angular/router";
 
@@ -8,7 +9,8 @@ import { Router } from "@angular/router";
   templateUrl: './catalogo-concurso.component.html',
   styleUrls: ['./catalogo-concurso.component.css'],
   providers: [
-    ConcursoService
+    ConcursoService,
+    SesionService
   ]
 })
 export class CatalogoConcursoComponent implements OnInit {
@@ -16,10 +18,12 @@ export class CatalogoConcursoComponent implements OnInit {
   public concursos : Concurso[];
 
   constructor( private concursoService : ConcursoService,
+               private sesionService : SesionService,
                private router : Router) { }
 
   ngOnInit() {
-    this.concursoService.catalogoConcurso( ).subscribe( data => {
+    let usuario = this.sesionService.getDataSesion();
+    this.concursoService.catalogoConcurso( usuario.id ).subscribe( data => {
       this.concursos = data;
     }, err => {
       console.log(err);

@@ -18,6 +18,7 @@ export class LoginService {
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
     return this.http.post<any>(this.urlServer+'/api/user/login', JSON.stringify(usuario),{ headers:headers } );
 
+
   }
 
   crearCuenta( usuario : Usuario ) : Observable<any>{

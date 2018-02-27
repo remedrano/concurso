@@ -76,6 +76,7 @@ export class CrearConcursoComponent implements OnInit {
         console.log(err);
       });
 
+
     }
     if( this.archivo == null ){
       alert("Selecciona una imagen");

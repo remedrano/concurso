@@ -14,7 +14,7 @@ export class ConcursoService {
 
   crearConcurso(concurso: Concurso, idUsuario:number, archivo : any ) : Observable<Concurso>{
     concurso.imagenConcurso = archivo;
-    concurso.idUsuarioCreador
+    concurso.idUsuarioCreador = idUsuario;
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
     return this.http.post<Concurso>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
   }
@@ -23,20 +23,23 @@ export class ConcursoService {
     return this.http.get<Concurso>('assets/baseDatos/concurso.json');
   }
 
-  catalogoConcurso() : Observable<Concurso[]>{
-    return this.http.get<Concurso[]>('assets/baseDatos/datos.json');
+  catalogoConcurso(idUsuario : number ) : Observable<Concurso[]>{
+
+    //http://localhost:8090/api/concurso/usuario/{idUsuarioCreador}
+    return this.http.get<Concurso[]>(this.urlServer+'/api/concurso/usuario/'+idUsuario);
   }
 
+
   eliminarConcurso( concurso: Concurso ): Observable<any>{
-    const params = new HttpParams( ).set('idConcurso', String(concurso.id));
-    return this.http.get('assets/baseDatos/eliminar.json',{params });
+    const params = new HttpParams( ).set('idConcurso', concurso.id.toString());
+    return this.http.delete(this.urlServer+ '/api/concurso/' ,{ params: params});
   }
 
   catalogoVoces( idConcurso ) : Observable<Voz[]>{
     return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
   }
 
-  subirVoz( voz : any , usuario : Usuario, archivo: File, idConcurso :number) : Observable<Voz>{
+  subirVoz( voz : any , usuario : Usuario, archivo: File, idConcurso: number, fileName: string) : Observable<Voz>{
 
     voz.usuario = usuario;
     voz.base64file = archivo;
@@ -65,17 +68,14 @@ export class ConcursoService {
 
   cargarConcurso( idConcurso : number, urlConcurso : string ) : Observable<Concurso>{
 
-    let params = new HttpParams(); let filtro :string;
-    console.log( idConcurso );
+    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
+
     if( idConcurso != null  && idConcurso != undefined && idConcurso.toString() != "undefined" ){
-      filtro=idConcurso.toString()
+      return this.http.get<Concurso>(this.urlServer+'/api/concurso/'+idConcurso);
     }else{
       if( urlConcurso != null && urlConcurso != undefined && urlConcurso != "undefined"){
-        filtro= urlConcurso;
+        return this.http.get<Concurso>(this.urlServer+'/api/url/'+urlConcurso);
       }
     }
-
-    const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.get<Concurso>(this.urlServer+'/api/',{params });
   }
 }

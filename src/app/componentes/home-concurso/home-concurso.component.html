@@ -1,7 +1,6 @@
 <div class="container">
 
   <br><br>
-
   <mat-accordion>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -30,6 +29,7 @@
 
     </mat-expansion-panel>
   </mat-accordion>
+
   <div class="divider divider"></div>
   <br><br>
 
@@ -108,15 +108,13 @@
           </mat-grid-tile>
 
           <mat-grid-tile >
-            <div >
-              <input type="file" #inputFile (change)="onFileChangeRafa(inputFile)" required>
-            </div>
+              <input type="file" #inputFile (change)="onFileChangeHome(inputFile)" required>
           </mat-grid-tile>
 
           <mat-grid-tile [colspan]="2">
             <mat-form-field class="full-width-input">
-              <textarea matInput placeholder="Observaciones" formControlName="observation" required> </textarea>
-              <mat-error *ngIf="validarCampos('observation')"> Observaciones obligatorio</mat-error>
+              <textarea matInput placeholder="Observaciones" formControlName="observacion" required> </textarea>
+              <mat-error *ngIf="validarCampos('observacion')"> Observaciones obligatorio</mat-error>
             </mat-form-field>
           </mat-grid-tile>
 
