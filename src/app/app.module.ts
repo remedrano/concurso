@@ -76,11 +76,15 @@ import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/ed
           component: CrearConcursoComponent
         },
         {
+          path: 'editarConcurso/:id',
+          component: EditarConcursoComponent
+        },
+        {
           path: 'catalogoConcurso',
           component: CatalogoConcursoComponent
         },
         {
-          path: 'catalogoConcurso/detalleConcurso/:id/:tipo',
+          path: 'catalogoConcurso/detalleConcurso/:id',
           component: HomeConcursoComponent
         },
         {
@@ -89,7 +93,7 @@ import {EditarConcursoComponent} from "./componentes/concurso/editar-concurso/ed
         },
         {
           path: 'catalogoConcurso/editarConcurso/:id',
-          component:EditarConcursoComponent
+          component: EditarConcursoComponent
         }
       ]
     )

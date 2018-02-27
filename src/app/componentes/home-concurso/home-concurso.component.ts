@@ -39,13 +39,13 @@ export class HomeConcursoComponent implements OnInit {
   public nameFile : string;
 
   constructor(
-     private fb: FormBuilder,
-     private concursoService : ConcursoService,
-     private router : Router,
-     private route: ActivatedRoute,
-     private cd: ChangeDetectorRef ,
-     public dialog: MatDialog,
-     public sesionService : SesionService
+    private fb: FormBuilder,
+    private concursoService : ConcursoService,
+    private router : Router,
+    private route: ActivatedRoute,
+    private cd: ChangeDetectorRef ,
+    public dialog: MatDialog,
+    public sesionService : SesionService
   ) { }
 
   ngOnInit( ) {
@@ -78,7 +78,7 @@ export class HomeConcursoComponent implements OnInit {
   }
 
   reproducirAudio( urlArchivo ): void {
-
+    console.log(urlArchivo + "miurl")
     let dialogRef = this.dialog.open(DialogClass, {
       width: '400px',
       data: { urlArchivo: urlArchivo },
@@ -110,11 +110,12 @@ export class HomeConcursoComponent implements OnInit {
 
     if (this.form.valid && this.archivo != null ) {
       this.route.params.subscribe( params => this.params = (params) );
-
-      this.concursoService.cargarConcurso( null , this.params["nombre"]).subscribe( data => {
+      let usuario = this.sesionService.getDataSesion();
+      console.log(this.concurso)
+      this.concursoService.cargarConcurso( null , this.params["id"]).subscribe( data => {
 
         if( data != null){//Busco el id del concurso por el nombre
-          this.concursoService.subirVoz(this.form.value , this.archivo , data.id, this.nameFile ).subscribe( data => {
+          this.concursoService.subirVoz(this.form.value , usuario, this.archivo , ('' + data.id), this.nameFile ).subscribe( data => {
             if( data["code"] == 0 && data != null ){ //Registro almacenado
               alert("Registro almacenada!");
             }
@@ -126,9 +127,9 @@ export class HomeConcursoComponent implements OnInit {
             console.log(err);
           });
         }
-        }, err => {
-          console.log(err);
-        });
+      }, err => {
+        console.log(err);
+      });
 
     }
     console.log( this.archivo )
@@ -178,8 +179,8 @@ export class DialogClass implements OnInit,AfterViewInit {
   ngOnInit(){}
 
   ngAfterViewInit(){
-   jwplayer("mediaplayer").setup({
-      file: "/assets/audio/voz.mp3",
+    jwplayer("mediaplayer").setup({
+      file: this.data,
       height: 180,
       width: 350,
       autostart: true,

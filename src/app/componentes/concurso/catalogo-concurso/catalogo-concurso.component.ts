@@ -38,6 +38,7 @@ export class CatalogoConcursoComponent implements OnInit {
         if( data != null ){
           if( data["code"] == 0 ){
             alert("Concurso eliminado")
+            this.router.navigate(['catalogoConcurso'])
           }
           else{
             alert("Problemas eliminando concurso!")

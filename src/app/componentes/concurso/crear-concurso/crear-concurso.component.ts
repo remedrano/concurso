@@ -44,7 +44,8 @@ export class CrearConcursoComponent implements OnInit {
       fechaFinConcurso: ['', Validators.required],
       valorPagar: ['', Validators.required],
       guion: ['', Validators.required],
-      recomendacion: ['', Validators.required]
+      recomendacion: ['', Validators.required],
+      userId: ['24a39808-c754-4de0-94c5-d00113b3d85d', Validators.required]
     });
 
     /*this.sesionService.sesionActivada().subscribe( value => {
@@ -66,8 +67,10 @@ export class CrearConcursoComponent implements OnInit {
       let usuario = this.sesionService.getDataSesion();
 
       this.concurso.crearConcurso(this.form.value , usuario.id ,this.archivo).subscribe( data => {
-        if( data["code"] == 0 && data != null ) //Usuario consultado
+        if( data["code"] == 0 && data != null ) {//Usuario consultado
           alert("Concurso almacenado!");
+          this.router.navigate(['catalogoConcurso'])
+        }
         else{
           alert("Error almacenando concurso")
         }

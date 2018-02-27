@@ -50,15 +50,15 @@
     </thead>
     <tbody>
     <tr *ngFor="let voz of voces">
-      <td>{{voz.usuario.email}}</td>
-      <td>{{voz.usuario.firstName + " " + voz.usuario.secondName}}</td>
-      <td>{{voz.usuario.firstLastName + " " + voz.usuario.secondLastName }}</td>
-      <td>{{voz.usuario.firstLastName}}</td>
-      <td>{{voz.fechaSubida}}</td>
-      <td>{{voz.archivoOriginal}}</td>
-      <td>{{voz.archivoConvertida}}</td>
+      <td>{{voz.email}}</td>
+      <td>{{voz.firstName + " " + voz.secondName}}</td>
+      <td>{{voz.firstLastName + " " + voz.secondLastName }}</td>
+      <td>{{voz.dateUpload}}</td>
+      <td>{{voz.status}}</td>
+      <td>{{voz.fileVoiceOriginal}}</td>
+      <td>{{voz.base64file}}</td>
       <td class="center-align">
-        <mat-icon *ngIf="voz.estadoVoz=='Convertida'" style="cursor: pointer" (click)="reproducirAudio(voz.archivoConvertida)" >play_circle_filled</mat-icon>
+        <mat-icon *ngIf="voz.status=='Convertida'" style="cursor: pointer" (click)="reproducirAudio(voz.base64file)" >play_circle_filled</mat-icon>
       </td>
     </tr>
     </tbody>
@@ -108,7 +108,7 @@
           </mat-grid-tile>
 
           <mat-grid-tile >
-              <input type="file" #inputFile (change)="onFileChangeHome(inputFile)" required>
+            <input type="file" #inputFile (change)="onFileChangeHome(inputFile)" required>
           </mat-grid-tile>
 
           <mat-grid-tile [colspan]="2">
@@ -127,4 +127,4 @@
       </form>
     </mat-card-content>
   </mat-card>
-  </div>
+</div>
