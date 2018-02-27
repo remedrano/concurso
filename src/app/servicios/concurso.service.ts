@@ -19,8 +19,10 @@ export class ConcursoService {
     return this.http.post<Concurso>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
   }
 
-  catalogoConcurso() : Observable<Concurso[]>{
-    return this.http.get<Concurso[]>('assets/baseDatos/datos.json');
+  catalogoConcurso(idUsuario : number ) : Observable<Concurso[]>{
+
+    //http://localhost:8090/api/concurso/usuario/{idUsuarioCreador}
+    return this.http.get<Concurso[]>(this.urlServer+'/api/concurso/usuario/'+idUsuario);
   }
 
   eliminarConcurso( concurso: Concurso ): Observable<any>{
