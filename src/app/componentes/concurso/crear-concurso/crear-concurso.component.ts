@@ -63,22 +63,20 @@ export class CrearConcursoComponent implements OnInit {
   enviarFormulario() {
 
     if (this.form.valid && this.archivo != null ) {
-      let param = this.route.params.subscribe( params => this.params = (params) );
-      //this.concurso.cargarConcurso( null , param["nombre"]).subscribe( data => {
+      this.route.params.subscribe( params => this.params = (params) );
+      let usuario = this.sesionService.getDataSesion();
 
-        this.concurso.crearConcurso(this.form.value , this.archivo).subscribe( data => {
-          if( data["code"] == 0 && data != null ) //Usuario consultado
-            alert("Concurso almacenado!");
-          else{
-            alert("Error almacenando concurso")
-          }
+      this.concurso.crearConcurso(this.form.value , usuario.id ,this.archivo).subscribe( data => {
+        if( data["code"] == 0 && data != null ) //Usuario consultado
+          alert("Concurso almacenado!");
+        else{
+          alert("Error almacenando concurso")
+        }
+      }, err => {
+        console.log(err);
+      });
 
-        }, err => {
-          console.log(err);
-        });
-
-
-    };
+    }
     if( this.archivo == null ){
       alert("Selecciona una imagen");
     }
@@ -90,7 +88,6 @@ export class CrearConcursoComponent implements OnInit {
   }
 
   onFileChange(input:any){
-    console.log("aqui si llega")
     //var extn = filename.split(".").pop();
     if (input.files && input.files[0]) {
       //this.archivo = input.files[0];
@@ -103,7 +100,6 @@ export class CrearConcursoComponent implements OnInit {
             context = canvas.getContext("2d");
           context.drawImage(archivoLocal,0,0,200,200);
         }.bind(this);
-        console.log("hasta aqui tambien")
 
         this.archivo = e.target.result;
 

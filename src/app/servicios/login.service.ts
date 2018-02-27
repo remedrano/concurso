@@ -8,7 +8,7 @@ import {SesionService} from "../servicios/sesion.service";
 @Injectable()
 export class LoginService {
 
-  private urlServer : string = 'http://http://192.168.0.7:9000';
+  private urlServer : string = 'http://localhost:9000';
 
   constructor( private router: Router, private http: HttpClient, private sesion : SesionService ) {
   }
@@ -21,7 +21,6 @@ export class LoginService {
   }
 
   crearCuenta( usuario : Usuario ) : Observable<any>{
-
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
     return this.http.post<any>(this.urlServer+'/api/user', JSON.stringify(usuario), { headers: headers}  );
   }

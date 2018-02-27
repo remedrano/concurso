@@ -2,12 +2,10 @@ import {Component, OnInit, ChangeDetectorRef, AfterViewInit, Inject} from '@angu
 import { ConcursoService } from "../../servicios/concurso.service";
 import {  SesionService } from "../../servicios/sesion.service";
 
-
 import {Router,ActivatedRoute} from "@angular/router";
 import { Voz } from "../../modelos/voz";
 import { Usuario } from "../../modelos/usuario";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { FileUploader , FileLikeObject} from 'ng2-file-upload';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import { Concurso } from '../../modelos/concurso';
@@ -61,8 +59,8 @@ export class HomeConcursoComponent implements OnInit {
       base64file: ['6ff58e89-98a6-4285-837f-1a8e1957d352', Validators.required],
     });
 
-    let param = this.route.params.subscribe( params => this.params = (params) );
-    this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
+    this.route.params.subscribe( params => this.params = (params) );
+    this.concursoService.cargarConcurso( null , this.params["nombre"]).subscribe( data => {
 
       this.concurso = data;
       if( this.concurso != null ) {
@@ -130,7 +128,7 @@ export class HomeConcursoComponent implements OnInit {
 
       let param = this.route.params.subscribe( params => this.params = (params) );
 
-      this.concursoService.cargarConcurso( '6ff58e89-98a6-4285-837f-1a8e1957d352' , param["nombre"]).subscribe( data => {
+      this.concursoService.cargarConcurso( null , param["nombre"]).subscribe( data => {
 
         if( data != null){//Busco el id del concurso por el nombre
           this.concursoService.subirVoz(this.form.value, usuario , this.archivo , data.id).subscribe( data => {
@@ -145,9 +143,9 @@ export class HomeConcursoComponent implements OnInit {
             console.log(err);
           });
         }
-        }, err => {
-          console.log(err);
-        });
+      }, err => {
+        console.log(err);
+      });
 
     }
     if( this.archivo == null ){
@@ -158,6 +156,19 @@ export class HomeConcursoComponent implements OnInit {
 
   onClicUrl( ){
     this.valorUrl = this.form.value.urlConcurso
+  }
+
+  onFileChange(input:any) {
+    //var extn = filename.split(".").pop();
+    if (input.files && input.files[0]) {
+      //this.archivo = input.files[0];
+      let reader = new FileReader();
+      reader.onload = function (e: any) {
+        this.archivo = e.target.result;
+      }.bind(this);
+
+      reader.readAsDataURL(input.files[0]);
+    }
   }
 }
 

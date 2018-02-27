@@ -1,22 +1,37 @@
 <div class="container">
 
-  <div class="divider divider"></div>
-  <h5 class="center">Información del concurso</h5>
+  <br><br>
 
   <mat-accordion>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Nombre :
+          Información del concurso :
         </mat-panel-title>
         <mat-panel-description>
-         {{concurso.nombreConcurso}}
-          - más información
+          {{concurso.nombreConcurso}}
         </mat-panel-description>
       </mat-expansion-panel-header>
+      <mat-grid-list cols="4" rowHeight="20px">
+        <mat-grid-tile class="left-align left "><b>Url :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.urlConcurso}} </mat-grid-tile>
+        <mat-grid-tile><b>Valor a pagar ($) :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.valorPagar}} </mat-grid-tile>
+        <mat-grid-tile><b>Fecha inicio :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.fechaInicioConcurso}} </mat-grid-tile>
+        <mat-grid-tile><b>Fecha Fin :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.fechaFinConcurso}} </mat-grid-tile>
+        <mat-grid-tile><b>Guión :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.guion}} </mat-grid-tile>
+        <mat-grid-tile><b>Recomendación :</b></mat-grid-tile>
+        <mat-grid-tile> {{concurso.recomendacion}} </mat-grid-tile>
+
+      </mat-grid-list>
 
     </mat-expansion-panel>
   </mat-accordion>
+  <div class="divider divider"></div>
+  <br><br>
 
   <h5 class="center">Listado de audios</h5>
 
@@ -50,6 +65,7 @@
   </table>
 
   <div class="divider"></div>
+  <br><br><br>
   <h5 class="center">Agregar audio</h5>
   <mat-card>
     <mat-card-content>
@@ -93,7 +109,7 @@
 
           <mat-grid-tile >
             <div >
-              <input type="file" #archivoVoz (change)="onFileChangeRafa(archivoVoz)" required>
+              <input type="file" #inputFile (change)="onFileChangeRafa(inputFile)" required>
             </div>
           </mat-grid-tile>
 

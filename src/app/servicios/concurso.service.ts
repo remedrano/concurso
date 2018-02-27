@@ -8,12 +8,13 @@ import { Observable} from "rxjs/Observable";
 @Injectable()
 export class ConcursoService {
 
-  private urlServer : string = 'http://192.168.0.7:9000';
+  private urlServer : string = 'http://localhost:9000';
 
   constructor( private http: HttpClient ) { }
 
-  crearConcurso(concurso: Concurso, archivo : any ) : Observable<Concurso>{
+  crearConcurso(concurso: Concurso, idUsuario:number, archivo : any ) : Observable<Concurso>{
     concurso.imagenConcurso = archivo;
+    concurso.idUsuarioCreador
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
     return this.http.post<Concurso>(this.urlServer+'/api/concurso', JSON.stringify(concurso), { headers: headers}  );
   }
@@ -62,13 +63,19 @@ export class ConcursoService {
     });
   }
 
-  cargarConcurso( idConcurso : string, urlConcurso : string ) : Observable<Concurso>{
+  cargarConcurso( idConcurso : number, urlConcurso : string ) : Observable<Concurso>{
 
-    let params = new HttpParams();
-    //if( idConcurso != null ) params.append("idConcurso" , idConcurso.toString()  );
-    //if( urlConcurso != null ) params.append("nombreConcurso" , urlConcurso );
+    let params = new HttpParams(); let filtro :string;
+    console.log( idConcurso );
+    if( idConcurso != null  && idConcurso != undefined && idConcurso.toString() != "undefined" ){
+      filtro=idConcurso.toString()
+    }else{
+      if( urlConcurso != null && urlConcurso != undefined && urlConcurso != "undefined"){
+        filtro= urlConcurso;
+      }
+    }
 
     const headers = new HttpHeaders ( { 'Content-Type': 'application/json' } );
-    return this.http.get<Concurso>(this.urlServer+'/api/concurso/6ff58e89-98a6-4285-837f-1a8e1957d352');
+    return this.http.get<Concurso>(this.urlServer+'/api/',{params });
   }
 }
