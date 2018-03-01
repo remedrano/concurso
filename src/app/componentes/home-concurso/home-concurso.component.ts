@@ -176,16 +176,20 @@ export class DialogClass implements OnInit,AfterViewInit {
     this.dialogRef.close();
   }
 
-  ngOnInit(){}
+  ngOnInit(){
+  }
 
   ngAfterViewInit(){
-    jwplayer("mediaplayer").setup({
+
+    //console.log(this.data);
+
+    /*jwplayer("mediaplayer").setup({
       file: this.data,
       height: 180,
       width: 350,
       autostart: true,
       controls: true
-    }) ;
+    }) ;*/
   }
 
 }

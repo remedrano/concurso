@@ -45,7 +45,9 @@ export class ConcursoService {
   }
 
   catalogoVoces( idConcurso ) : Observable<Voz[]>{
-    return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
+    //return this.http.get<Voz[]>(this.urlServer+'/api/voces/concurso/'+idConcurso);
+    alert("Entro aca");
+    return this.http.get<Voz[]>('assets/baseDatos/audios.json');
   }
 
   subirVoz( voz : any , usuario : Usuario, archivo: File, idConcurso: string, fileName: string) : Observable<Voz>{
