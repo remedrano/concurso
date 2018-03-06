@@ -1,7 +1,6 @@
 <app-header urlConcurso="{{urlConcurso}}" ></app-header>
 
-<div class="container">
-
+<div class="contenedor">
   <br><br>
   <mat-accordion>
     <mat-expansion-panel (opened)="true">
@@ -10,22 +9,22 @@
           Información del concurso :
         </mat-panel-title>
         <mat-panel-description>
-          {{concurso.nombreConcurso}}
+          {{ concurso.nombreConcurso }}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <mat-grid-list cols="4" rowHeight="20px">
-        <mat-grid-tile class="left-align left "><b>Url :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.urlConcurso}} </mat-grid-tile>
-        <mat-grid-tile><b>Valor a pagar ($) :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.valorPagar}} </mat-grid-tile>
-        <mat-grid-tile><b>Fecha inicio :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.fechaInicioConcurso}} </mat-grid-tile>
-        <mat-grid-tile><b>Fecha Fin :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.fechaFinConcurso}} </mat-grid-tile>
-        <mat-grid-tile><b>Guión :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.guion}} </mat-grid-tile>
-        <mat-grid-tile><b>Recomendación :</b></mat-grid-tile>
-        <mat-grid-tile> {{concurso.recomendacion}} </mat-grid-tile>
+      <mat-grid-list cols="4" rowHeight="20px" class="left-align">
+        <mat-grid-tile ><b class="text-inside-grid-rigth">Url :</b></mat-grid-tile>
+        <mat-grid-tile><span class="text-inside-grid-left"> {{concurso.urlConcurso}} </span></mat-grid-tile>
+        <mat-grid-tile><b class="text-inside-grid-rigth">Valor a pagar ($) :</b></mat-grid-tile>
+        <mat-grid-tile><span class="text-inside-grid-left"> {{concurso.valorPagar}} </span></mat-grid-tile>
+        <mat-grid-tile><b class="text-inside-grid-rigth">Fecha inicio :</b></mat-grid-tile>
+        <mat-grid-tile><span class="text-inside-grid-left">  {{concurso.fechaInicioConcurso | date}} </span></mat-grid-tile>
+        <mat-grid-tile><b class="text-inside-grid-rigth">Fecha Fin :</b></mat-grid-tile>
+        <mat-grid-tile><span class="text-inside-grid-left">  {{concurso.fechaFinConcurso | date}} </span></mat-grid-tile>
+        <mat-grid-tile><b class="text-inside-grid-rigth">Guión :</b></mat-grid-tile>
+        <mat-grid-tile><span class="text-inside-grid-left">  {{concurso.guion}} </span></mat-grid-tile>
+        <mat-grid-tile><b class="text-inside-grid-rigth">Recomendación :</b></mat-grid-tile>
+        <mat-grid-tile><span class="text-inside-grid-left">  {{concurso.recomendacion}} </span></mat-grid-tile>
 
       </mat-grid-list>
 
@@ -34,19 +33,16 @@
 
   <div class="divider divider"></div>
   <br><br>
-
-  <h5 class="center">Listado de audios</h5>
-
   <table id="catalogoVoces" class="table row-border hover" >
     <thead>
     <tr>
       <th>Email</th>
       <th>Nombres</th>
       <th>Apellidos</th>
-      <th>Fecha registro</th>
+      <th>Registro</th>
       <th>Estado</th>
-      <th>Archivo original</th>
-      <th>Archivo convertido</th>
+      <th>Original</th>
+      <th>Convertido</th>
       <th>Reproducir</th>
     </tr>
     </thead>
@@ -57,8 +53,8 @@
       <td>{{voz.usuario.firstLastName + " " + voz.usuario.secondLastName }}</td>
       <td>{{voz.usuario.firstLastName}}</td>
       <td>{{voz.fechaSubida}}</td>
-      <td>{{voz.archivoOriginal}}</td>
-      <td>{{voz.archivoConvertida}}</td>
+      <td><a target="_blank" href="{{voz.archivoOriginal}}">Descargar</a></td>
+      <td><a *ngIf=" voz.archivoConvertida!=null && voz.archivoConvertida!=''" target="_blank" href="{{voz.archivoConvertida}}">Descargar</a></td>
       <td class="center-align">
         <mat-icon *ngIf="voz.estadoVoz=='Convertida'" style="cursor: pointer" (click)="reproducirAudio(voz.archivoConvertida)" >play_circle_filled</mat-icon>
       </td>
@@ -67,66 +63,68 @@
   </table>
 
   <div class="divider"></div>
-  <br><br><br>
-  <h5 class="center" *ngIf="admin==null || admin==''">Agregar audio</h5>
-  <mat-card *ngIf="admin==null || admin==''">
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="enviarFormulario()">
-        <mat-grid-list cols="2" rowHeight="70px">
 
-          <mat-grid-tile >
-            <mat-input-container class="full-width-input">
-              <input matInput placeholder="Primer nombre" formControlName="firstName" required>
-              <mat-error *ngIf="validarCampos('firstName')"> Primer nombre obligatorio </mat-error>
-            </mat-input-container>
-          </mat-grid-tile>
+  <h5 class="center" *ngIf="admin==null || admin==''"><button mat-raised-button color="primary" (click)="mostrarAgregarAudio()">Agregar Audio</button></h5>
+  <div *ngIf="agregarAudio">
+    <mat-card *ngIf="admin==null || admin==''">
+      <mat-card-content>
+        <form [formGroup]="form" (ngSubmit)="enviarFormulario()">
+          <mat-grid-list cols="2" rowHeight="70px">
 
-          <mat-grid-tile >
-            <mat-input-container class="full-width-input">
-              <input matInput placeholder="Segundo nombre" formControlName="secondName" required>
-              <mat-error *ngIf="validarCampos('secondName')"> Segundo nombre obligatorio </mat-error>
-            </mat-input-container>
-          </mat-grid-tile>
+            <mat-grid-tile >
+              <mat-input-container class="full-width-input">
+                <input matInput placeholder="Primer nombre" formControlName="firstName" required>
+                <mat-error *ngIf="validarCampos('firstName')"> Primer nombre obligatorio </mat-error>
+              </mat-input-container>
+            </mat-grid-tile>
 
-          <mat-grid-tile >
-            <mat-input-container class="full-width-input">
-              <input matInput placeholder="Primero Apellido" formControlName="firstLastName" required>
-              <mat-error *ngIf="validarCampos('firstLastName')"> Primer apellido obligatorio </mat-error>
-            </mat-input-container>
-          </mat-grid-tile>
+            <mat-grid-tile >
+              <mat-input-container class="full-width-input">
+                <input matInput placeholder="Segundo nombre" formControlName="secondName" required>
+                <mat-error *ngIf="validarCampos('secondName')"> Segundo nombre obligatorio </mat-error>
+              </mat-input-container>
+            </mat-grid-tile>
 
-          <mat-grid-tile >
-            <mat-input-container class="full-width-input">
-              <input matInput placeholder="Segundo apellido" formControlName="secondLastName" required>
-              <mat-error *ngIf="validarCampos('secondLastName')"> Segundo apellido obligatorio </mat-error>
-            </mat-input-container>
-          </mat-grid-tile>
+            <mat-grid-tile >
+              <mat-input-container class="full-width-input">
+                <input matInput placeholder="Primero Apellido" formControlName="firstLastName" required>
+                <mat-error *ngIf="validarCampos('firstLastName')"> Primer apellido obligatorio </mat-error>
+              </mat-input-container>
+            </mat-grid-tile>
 
-          <mat-grid-tile >
-            <mat-input-container class="full-width-input">
-              <input matInput type="email" placeholder="Email" formControlName="email" required>
-              <mat-error *ngIf="validarCampos('email')"> Email obligatorio </mat-error>
-            </mat-input-container>
-          </mat-grid-tile>
+            <mat-grid-tile >
+              <mat-input-container class="full-width-input">
+                <input matInput placeholder="Segundo apellido" formControlName="secondLastName" required>
+                <mat-error *ngIf="validarCampos('secondLastName')"> Segundo apellido obligatorio </mat-error>
+              </mat-input-container>
+            </mat-grid-tile>
 
-          <mat-grid-tile >
-              <input type="file" #inputFile (change)="onFileChangeHome(inputFile)" required>
-          </mat-grid-tile>
+            <mat-grid-tile >
+              <mat-input-container class="full-width-input">
+                <input matInput type="email" placeholder="Email" formControlName="email" required>
+                <mat-error *ngIf="validarCampos('email')"> Email obligatorio </mat-error>
+              </mat-input-container>
+            </mat-grid-tile>
 
-          <mat-grid-tile [colspan]="2">
-            <mat-form-field class="full-width-input">
-              <textarea matInput placeholder="Observaciones" formControlName="observacion" required> </textarea>
-              <mat-error *ngIf="validarCampos('observacion')"> Observaciones obligatorio</mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
+            <mat-grid-tile >
+                <input type="file" #inputFile (change)="onFileChangeHome(inputFile)" required>
+            </mat-grid-tile>
 
-        </mat-grid-list>
+            <mat-grid-tile [colspan]="2">
+              <mat-form-field class="full-width-input">
+                <textarea matInput placeholder="Observaciones" formControlName="observacion" required> </textarea>
+                <mat-error *ngIf="validarCampos('observacion')"> Observaciones obligatorio</mat-error>
+              </mat-form-field>
+            </mat-grid-tile>
 
-        <mat-divider></mat-divider>
-        <br>
-        <button mat-raised-button color="primary" type="submit" >Guardar</button>
-        <button mat-raised-button color="warn" type="button" ng-click="history.back()" >Cancelar</button>
-      </form>
-    </mat-card-content>
-  </mat-card>
+          </mat-grid-list>
+
+          <mat-divider></mat-divider>
+          <br>
+          <button mat-raised-button color="primary" type="submit" >Guardar</button>
+          <button mat-raised-button color="warn" type="button" (click)="mostrarAgregarAudio()" >Cancelar</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+    </div>
   </div>

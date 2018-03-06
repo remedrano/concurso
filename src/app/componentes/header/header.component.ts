@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, OnInit, Input} from '@angular/core';
 import { SesionService } from '../../servicios/sesion.service';
 import { LoginService } from '../../servicios/login.service';
 import {ActivatedRoute, Router} from "@angular/router";
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-header',
@@ -32,10 +33,8 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.sesionService.sesionActivada().subscribe( value => { this.isLoggedIn = value} )
     this.route.url.subscribe( url => {
-      console.log(url);
       if( url.length != 0 ) {
         this.url = url[0].path;
-        console.log(url);
       }
       else
         this.router.navigate(["/login"]);
@@ -56,7 +55,13 @@ export class HeaderComponent implements OnInit {
 
   onLogout(){
     this.loginService.logout();
-    alert("Gracias por utilizar nuestra plataforma");
-    this.router.navigate(["/concurso/"+this.urlConcurso]);
+
+    swal(
+      'Gracias por utilizar nuestra plataforma!',
+      'Vuelve pronto...',
+      'success'
+    ).then((result) => {
+        this.router.navigate(["/concurso/"+this.urlConcurso]);
+    });
   }
 }

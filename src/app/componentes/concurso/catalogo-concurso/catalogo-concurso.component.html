@@ -23,8 +23,8 @@
     <tr *ngFor="let concurso of concursos">
       <td>{{concurso.nombreConcurso}}</td>
       <td>{{concurso.urlConcurso}}</td>
-      <td>{{concurso.fechaInicioConcurso}}</td>
-      <td>{{concurso.fechaFinConcurso}}</td>
+      <td>{{concurso.fechaInicioConcurso | date}}</td>
+      <td>{{concurso.fechaFinConcurso | date}}</td>
       <td>{{concurso.valorPagar}}</td>
       <td>{{concurso.fechaCreacion}}</td>
       <td class="center-align">
@@ -33,7 +33,7 @@
       <td class="center-align">
         <mat-icon style="cursor: pointer" routerLink="/editarConcurso/{{concurso.id}}" >edit</mat-icon>
       </td>
-      <td class="center-align">
+      <td class="center-align eliminar">
         <mat-icon style="cursor: pointer" (click)="eliminar(concurso)">delete</mat-icon>
       </td>
     </tr>

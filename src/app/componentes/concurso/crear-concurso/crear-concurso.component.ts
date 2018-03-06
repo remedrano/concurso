@@ -4,7 +4,7 @@ import { LoginService  } from '../../../servicios/login.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { SesionService } from "../../../servicios/sesion.service";
 import { ConcursoService } from "../../../servicios/concurso.service";
-
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-crear-concurso',
@@ -64,15 +64,28 @@ export class CrearConcursoComponent implements OnInit {
 
       this.concurso.crearConcurso(this.form.value , usuario.id ,this.archivo).subscribe( data => {
         if( data["code"] == 0 && data != null ) { //Usuario consultado
-          alert("Concurso almacenado!");
-          this.router.navigate(['/catalogoConcurso']);
+          swal(
+            'Concurso almacenado!',
+            '',
+            'success'
+          ).then((result) => {
+            this.router.navigate(['/catalogoConcurso']);
+          })
         }
         else{
           if( data["code"] == 1 && data != null ) {
-            alert("El concurso se encuentra registrado!, intenta colocar otra url")
+            swal(
+              'El concurso se encuentra registrado!',
+              'intenta colocar otra url',
+              'error'
+            )
           }
           else{
-            alert("Error almacenando datos!");
+            swal(
+              'Error almacenando datos!',
+              'Contacte con el administrador.',
+              'error'
+            )
           }
 
         }
@@ -83,7 +96,11 @@ export class CrearConcursoComponent implements OnInit {
 
     }
     if( this.archivo == null ){
-      alert("Selecciona una imagen");
+      swal(
+        'Selecciona una imagen!',
+        '',
+        'error'
+      )
     }
     this.envioFormulario = true;
   }
@@ -107,11 +124,14 @@ export class CrearConcursoComponent implements OnInit {
         }
       }
       if( encontro == false){
-        alert("Archivo con extensión no permitida --> "+this.extensionesPermitidas.toString());
+
+        swal(
+          "Archivo con extensión no permitida --> "+this.extensionesPermitidas.toString(),
+          'Seleccione un archivo permitido',
+          'error'
+        )
         return false;
       }
-
-
 
       let reader = new FileReader();
       reader.onload = function (e: any) {
@@ -130,6 +150,5 @@ export class CrearConcursoComponent implements OnInit {
       reader.readAsDataURL(input.files[0]);
     }
   }
-
 
 }

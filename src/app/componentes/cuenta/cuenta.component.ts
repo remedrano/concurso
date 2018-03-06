@@ -3,6 +3,9 @@ import { FormGroup, FormBuilder, Validators,AbstractControl } from '@angular/for
 import { LoginService  } from '../../servicios/login.service';
 import { Router} from '@angular/router';
 import { SesionService } from "../../servicios/sesion.service";
+import swal from 'sweetalert2';
+
+import {Usuario} from '../../modelos/usuario';
 
 function passwordConfirming(c: AbstractControl): any {
   if(!c.parent || !c) return;
@@ -71,12 +74,45 @@ export class CuentaComponent implements OnInit {
 
       this.loginService.crearCuenta(this.form.value).subscribe( data => {
 
-        if( data["code"] == 1 && data != null ) //Usuario consultado
-          alert("Usuario no existe");
+        if( data["code"] == 1 && data != null ) { //Usuario consultado
+          swal(
+            'El usuario ya existe!',
+            'Por favor digite otro correo',
+            'error'
+          )
+        }
         else{
-          let usuario = data;
-          this.sesionService.iniciarSesion( usuario );
-          window.location.reload()
+
+          let datosUsuario  : Usuario = {
+            firstName: '',
+            secondName: '',
+            firstLastName: '',
+            secondLastName: '',
+            email: this.form.value.email,
+            password: this.form.value.password,
+            rol: '',
+            id: ''
+          };
+
+          this.loginService.login( datosUsuario ).subscribe(
+            data => {
+              let usuario = data;
+
+              this.sesionService.iniciarSesion( usuario );
+              swal(
+                'Usuario registrado!',
+                'Será redireccionado al inicio de la plataforma',
+                'success'
+              ).then((result) => {
+                if (result.value) {
+                  this.router.navigate(['/inicio'])
+                }
+              })
+
+            }
+          );
+
+
         }
 
       }, err => {

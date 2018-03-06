@@ -24,7 +24,7 @@
     "fechaSubida": "2012-15-04",
     "estadoVoz": "Convertida",
     "archivoOriginal": "/assets/audio/voz.mp3",
-    "archivoConvertida": "path",
+    "archivoConvertida": "/assets/audio/voz.mp3",
     "idVoz": "1"
   }
 ]

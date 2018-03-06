@@ -4,6 +4,8 @@ import {  SesionService } from '../../../servicios/sesion.service'
 import { Concurso } from "../../../modelos/concurso";
 import { Router } from "@angular/router";
 
+import swal from 'sweetalert2';
+
 @Component({
   selector: 'app-catalogo-concurso',
   templateUrl: './catalogo-concurso.component.html',
@@ -23,9 +25,9 @@ export class CatalogoConcursoComponent implements OnInit {
                private router : Router) { }
 
   ngOnInit() {
-    this.sesionService
+
     let usuario = this.sesionService.getDataSesion();
-    this.concursoService.catalogoConcurso( 1).subscribe( data => {
+    this.concursoService.catalogoConcurso( usuario.id ).subscribe( data => {
       this.concursos = data;
       jQuery(document).ready(function () {
         jQuery("#tabla-catalogo").DataTable({
@@ -42,13 +44,27 @@ export class CatalogoConcursoComponent implements OnInit {
   eliminar( concurso : Concurso ){
 
     if( confirm("Realmente desea eliminar el concurso actual?, si existen voces o canciones registradas serán eliminadas")){
+      var tabla = $("#tabla-catalogo").DataTable();
+      $('#tabla-catalogo tbody').on( 'click', '.eliminar', function () {
+        tabla.row( $(this).parents('tr') ).remove();
+        tabla.draw();
+      });
+
       this.concursoService.eliminarConcurso( concurso ).subscribe( data => {
         if( data != null ){
           if( data["code"] == 0 ){
-            alert("Concurso eliminado")
+            swal(
+              'Concurso eliminado!',
+              '',
+              'success'
+            );
           }
           else{
-            alert("Problemas eliminando concurso!")
+            swal(
+              'Problemas eliminando concurso!',
+              '',
+              'error'
+            );
           }
         }
       }, err => {

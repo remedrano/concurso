@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService  } from '../../servicios/login.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SesionService} from "../../servicios/sesion.service";
+import swal from 'sweetalert2'
 
 @Component({
   selector: 'app-login',
@@ -48,7 +49,13 @@ export class LoginComponent implements OnInit {
       this.loginService.login(this.form.value).subscribe( data => {
 
         if( data["code"] == 1 && data != null ) //Usuario consultado
-          alert("Usuario no existe");
+        {
+          swal(
+            'El usuario no existe!',
+            'Por favor digite otro correo y otra clave e intente de nuevo',
+            'error'
+          )
+        }
         else{
           let usuario = data;
           this.sesionService.iniciarSesion( usuario );

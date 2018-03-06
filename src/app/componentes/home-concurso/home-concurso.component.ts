@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 
 import { Concurso } from '../../modelos/concurso';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home-concurso',
@@ -31,9 +32,10 @@ export class HomeConcursoComponent implements OnInit {
   public extensionesPermitidas = [".mp3", ".wav", ".ogg", ".wma", ".midi" ,".cd"];
   public voces : Voz[];
   public params : any;
-  public concurso : Concurso;
+  public concurso : any = { nombreConcurso : "e" };
   public admin : string;
   public nombreUrlByParam : string;
+  public agregarAudio : boolean = false;
 
   constructor(
      private fb: FormBuilder,
@@ -63,8 +65,13 @@ export class HomeConcursoComponent implements OnInit {
     if( this.nombreUrlByParam == null ){ //Validar la navegabilidad
       let urlConcursoLocal = this.sesionService.getUrlConcurso();
       if( urlConcursoLocal == null) {
-        alert("Url de concurso invalida");
-        this.router.navigate(["/inicio"]);
+        swal(
+          'Url de concurso invalida!',
+          '',
+          'error'
+        ).then((result) => {
+          this.router.navigate(['/inicio'])
+        })
         return false;
       }
       else{
@@ -79,6 +86,7 @@ export class HomeConcursoComponent implements OnInit {
 
       this.concurso = data;
       if( this.concurso != null ) {
+        this.concurso.nombreConcurso = data.nombreConcurso;
 
         //Si ingresa la primera vez sin sesion se registra la url
         this.sesionService.setUrlConcurso( this.nombreUrlByParam );
@@ -98,8 +106,13 @@ export class HomeConcursoComponent implements OnInit {
 
       }else{
 
-        alert("La url con nombre : "+ this.nombreUrlByParam + " no se encuentra registrada!")
-        this.router.navigate(["/inicio"]);
+        swal(
+          'No se puede redireccionar!',
+          'La url con nombre : '+ this.nombreUrlByParam + ' no se encuentra registrada!',
+          'error'
+        ).then((result) => {
+          this.router.navigate(['/inicio'])
+        })
       }
 
     }, err => {
@@ -108,6 +121,20 @@ export class HomeConcursoComponent implements OnInit {
 
   }
 
+  mostrarAgregarAudio(){
+    if( this.agregarAudio ) {
+      this.agregarAudio = false;
+      window.scrollTo(0, 0);
+
+    }
+    else {
+      this.agregarAudio = true;
+      setTimeout(function() {
+        window.scrollTo(0, 1000);
+      }, 10);
+
+    }
+  }
 
   reproducirAudio( urlArchivo ): void {
 
@@ -148,11 +175,28 @@ export class HomeConcursoComponent implements OnInit {
         if( data != null){//Busco el id del concurso por el nombre
           this.concursoService.subirVoz(this.form.value , this.archivo , data.id, this.nameFile ).subscribe( data => {
             if( data["code"] == 0 && data != null ){ //Registro almacenado
-              alert("Registro almacenada!");
-              this.router.navigate(["concurso/"])
+              this.mostrarAgregarAudio();
+              this.ngOnInit();
+
+              swal(
+                'Registro almacenado!',
+                '',
+                'success'
+              ).then((result) => {
+                if (result.value) {
+                  this.router.navigate(["concurso/"]);
+
+                }
+              })
+
+
             }
             else{
-              alert("Error almacenando datos")
+              swal(
+                'Error almacenando datos!',
+                'Se produjo un error inesperado , consulte con el administrador.',
+                'error'
+              )
             }
 
           }, err => {
@@ -166,7 +210,11 @@ export class HomeConcursoComponent implements OnInit {
     }
 
     if( this.archivo == null ){
-      alert("Debes seleccionar un archivo de audio");
+      swal(
+        'Debes seleccionar un archivo de audio!',
+        '',
+        'error'
+      )
     }
     this.envioFormulario = true;
   }
@@ -188,7 +236,12 @@ export class HomeConcursoComponent implements OnInit {
         }
       }
       if( encontro == false){
-        alert("Archivo con extensión no permitida --> "+this.extensionesPermitidas.toString());
+
+        swal(
+          "Archivos con extensión no permitida --> "+this.extensionesPermitidas.toString(),
+          'Seleccione un archivo de audio permitido',
+          'error'
+        )
         return false;
       }
 
@@ -219,13 +272,13 @@ export class DialogClass implements OnInit,AfterViewInit {
   ngOnInit(){}
 
   ngAfterViewInit(){
-   jwplayer("mediaplayer").setup({
+   /*jwplayer("mediaplayer").setup({
       file: "/assets/audio/voz.mp3",
       height: 180,
       width: 350,
       autostart: true,
       controls: true
-    }) ;
+    }) ;*/
   }
 
 }

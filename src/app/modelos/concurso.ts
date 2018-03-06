@@ -8,6 +8,6 @@ export interface Concurso {
   valorPagar: string,
   guion: string,
   recomendacion : string
-  idUsuarioCreador : number,
-  id : number
+  idUsuarioCreador : string,
+  id : string
 }

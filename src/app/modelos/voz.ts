@@ -6,7 +6,7 @@ export interface Voz {
   estadoVoz: string,
   archivoOriginal: any,
   archivoConvertida: string,
-  idVoz: number,
-  idConcurso: number,
+  idVoz: string,
+  idConcurso: string,
   nameFile : string
 }
